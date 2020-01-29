@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .row
+    .col-lg-6.col-md-8.col-sm-10.ml-auto.mr-auto
+      .card
+        .card-header.card-header-icon.card-header-rose
+          .card-icon
+            i.material-icons perm_identity
+        .card-body
+          form.form(method='POST' action='/account')
+            .form-group
+              label Имя
+              input.form-control(type='text' name='name' id='name' value=user.name)
+            .form-group
+              label Email
+              input.form-control(type='email' name='email' id='email' value=user.email)
+            button.btn.btn-rose.pull-right(type='submit') Редактировать

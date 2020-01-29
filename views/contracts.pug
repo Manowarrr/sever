@@ -1,0 +1,49 @@
+extends layout
+
+include mixins/_contractTableRow
+
+block content
+  .row
+    form.ml-auto.mr-auto(action=`/getContractsByDate` method='POST')
+      .form-row
+        .form-group.col-md-4
+          label(for='startDate') Начало периода
+          input.form-control.datepicker(type='text' name='startDate')
+        .form-group.col-md-4
+          label(for='finishDate') Конец периода
+          input.form-control.datepicker(type='text' name='finishDate')
+        .col-md-4
+          button.btn.btn-rose(type='submit') Поиск по дате
+  .row
+    .col-md-12
+      .card
+        .card-header.card-header-rose.card-header-icon
+          .card-icon
+            i.material-icons assignment
+          h4.card-title Список договоров
+        .card-body
+          .material-datatables
+            table.table.table-shopping.table-no-bordered.table-hover(id='contractTable' width='100%' cellspacing='0' style='width:100%')
+              thead
+                tr
+                  th.disabled-sorting.text-center Название
+                  th.text-center Цена
+                  th.text-center Площадь
+                  th.disabled-sorting.text-center Арендатор
+                  th.disabled-sorting.text-center Дата начала
+                  th.disabled-sorting.text-center Дата окончания
+                  th.disabled-sorting.text-center Файл
+                  th.text-center 
+              tfoot
+                tr
+                  th.disabled-sorting.text-center Название
+                  th.text-center Цена
+                  th.text-center Площадь
+                  th.disabled-sorting.text-center Арендатор
+                  th.disabled-sorting.text-center Дата начала
+                  th.disabled-sorting.text-center Дата окончания
+                  th.disabled-sorting.text-center Файл
+                  th.text-center  
+              tbody
+                each contract in contracts
+                  +contractTableRow(contract)

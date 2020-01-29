@@ -1,0 +1,49 @@
+mixin contractCard(contract = {})
+  .rotating-card-container.manual-flip
+    .card.card-product.card-rotate.card-background
+      .front.front-background
+        .card-header.card-header-rose
+          h4.card-title 
+            a(href=`/contracts/${contract.slug}`) #{contract.name}
+        .card-body.pb-0.pt-1
+          li.list-group-item
+            .row
+              .col 
+                span.text-rose.text-uppercase
+                  b Площадь
+              .col 
+                span.text-uppercase #{contract.space} кв.м.
+          li.list-group-item
+            .row
+              .col 
+                span.text-rose.text-uppercase
+                  b Цена
+              .col 
+                span.text-uppercase #{contract.price} р/кв.м.
+          .footer.text-right
+            a.btn.btn-success.btn-link.text-left(href=`/contracts/${contract._id}/edit`)
+              i.material-icons edit
+            button.btn.btn-rose.btn-round.btn-just-icon.rotate-btn.ml-auto(onClick="this.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add('hover')")
+              i.material-icons loop
+      .back.back-background
+        .card-header.card-header-rose
+          h4.card-title #{contract.name}
+        .card-body.m-0
+          li.list-group-item
+            .row
+              .col 
+                span.text-rose.text-uppercase
+                  b Дата начала
+              .col 
+                span.text-uppercase #{h.formatDate(contract.startDate)}
+          li.list-group-item
+            .row
+              .col 
+                span.text-rose.text-uppercase
+                  b Дата окончания
+              .col 
+                span.text-uppercase #{h.formatDate(contract.finishDate)}
+          .footer.text-right
+            button.btn.btn-rose.btn-round.btn-just-icon.ml-auto(onClick="this.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('hover')")
+              i.material-icons loop
+

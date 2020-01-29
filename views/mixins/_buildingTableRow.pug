@@ -1,0 +1,16 @@
+mixin buildingTableRow(building={})
+  tr
+    td
+      .img-container
+        img(src=`/uploads/${building.mainphoto || 'building.jpg'}`)
+    td.text-center.td-name
+      a(href=`/buildings/${building.slug}` style='color:#E81E63') #{building.name}
+    td.text-center #{building.purpose}
+    td.td-number.text-center #{building.place} м/кв
+    td.td-number.text-center #{building.price} р.
+    td.text-center #{building.floors}
+    td.text-center #{building.cadastr}
+    td.text-center
+      a.btn.btn-success.btn-link.text-left(href=`/buildings/${building._id}/edit`)
+        i.material-icons edit
+    

@@ -1,0 +1,83 @@
+extends layout
+
+block content
+  .row
+    .col-md-6
+      .card.card-chart
+        .card-header.card-header-icon.card-header-danger
+          .card-icon
+            i.material-icons pie_chart
+          h4.card-title Распределение объектов по районам
+        .card-body
+          .ct-chart(id='districtCountChart')
+        .card-footer
+          .row
+            .col-md-12
+              i.fa.fa-circle.text-info
+              | Октябрьский 
+              i.fa.fa-circle.text-warning
+              | Ленинский 
+              i.fa.fa-circle.text-danger
+              | Первомайский 
+    .col-md-6
+      .card.card-chart
+        .card-header.card-header-icon.card-header-danger
+          .card-icon
+            i.material-icons pie_chart
+          h4.card-title Распределение договоров по районам
+        .card-body
+          .ct-chart(id='districtContractCountChart')
+        .card-footer
+          .row
+            .col-md-12
+              i.fa.fa-circle.text-info
+              | Октябрьский 
+              i.fa.fa-circle.text-warning
+              | Первомайский 
+              i.fa.fa-circle.text-danger
+              | Ленинский 
+    .col-md-6
+      .card.card-chart
+        .card-header.card-header-icon.card-header-danger
+          .card-icon
+            i.material-icons pie_chart
+          h4.card-title Заполняемость Ленинский район
+        .card-body
+          .ct-chart(id='lenCountChart')
+        .card-footer
+          .row
+            .col-md-12
+              i.fa.fa-circle.text-info
+              | Свободно 
+              i.fa.fa-circle.text-danger
+              | Занято 
+    .col-md-6
+      .card.card-chart
+        .card-header.card-header-icon.card-header-danger
+          .card-icon
+            i.material-icons pie_chart
+          h4.card-title Заполняемость Октябрьский район
+        .card-body
+          .ct-chart(id='octCountChart')
+        .card-footer
+          .row
+            .col-md-12
+              i.fa.fa-circle.text-info
+              | Свободно 
+              i.fa.fa-circle.text-danger
+              | Занято 
+    .col-md-6
+      .card.card-chart
+        .card-header.card-header-icon.card-header-danger
+          .card-icon
+            i.material-icons pie_chart
+          h4.card-title Заполняемость Первомайский район
+        .card-body
+          .ct-chart(id='pervCountChart')
+        .card-footer
+          .row
+            .col-md-12
+              i.fa.fa-circle.text-info
+              | Свободно 
+              i.fa.fa-circle.text-danger
+              | Занято 

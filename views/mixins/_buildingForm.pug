@@ -1,0 +1,60 @@
+mixin buildingForm(building = {})
+  form.bg-white.px-3.py-3.mb-5(action=`/addBuilding/${building._id || ''}` method='POST' enctype='multipart/form-data')
+    .form-row
+      .form-group.col-md-6
+        label(for='name') Название
+        input.form-control(type='text' name='name' value=building.name)
+      .form-group.col-md-6
+        label(for='purpose') Назначение
+        input.form-control(type='text' name='purpose' value=building.purpose)
+    .form-row
+      .form-group.col
+        label(for='description') Примечание
+        textarea.form-control(name='description')= building.description
+    .form-row
+      .form-group.col
+        label(for='address') Адрес
+        input.form-control(type='text' id='address' name='location[address]' value=(building.location && building.location.address))
+    .form-row
+      .form-group.col
+        label(for='lng') Долгота
+        input.form-control(type='text' id='lng' name='location[coordinates][0]' required value=(building.location && building.location.coordinates[0]))
+    .form-row
+      .form-group.col
+        label(for='lat') Широта
+        input.form-control(type='text' id='lat' name='location[coordinates][1]' required value=(building.location && building.location.coordinates[1]))
+    .form-row
+      .form-group.col.form-file-upload.form-file-multiple
+        input.inputFileHidden(type='file' name='mainphoto' id='mainphoto' accept='image/*')
+        .input-group
+          input.form-control.inputFileVisible(type='text' placeholder='Загрузите главное фото')
+          span.input-group-btn
+            button.btn.btn-fab.btn-round.btn-rose(type='button')
+              i.material-icons attach_file
+    .form-row
+      .form-group.col-sm-3
+        label(for='cadastr') Кадастровый номер
+        input.form-control(type='text' name='cadastr' value=building.cadastr)
+      .form-group.col-sm-3
+        label(for='place') Площадь
+        input.form-control(type='number' step='any' name='place' value=building.place)
+      .form-group.col-sm-3
+        label(for='price') Цена
+        input.form-control(type='number' step='any' name='price' value=building.price)
+      .form-group.col-sm-3
+        label(for='floors') Этажность
+        input.form-control(type='text' name='floors' value=building.floors)
+    - const districts = h.districts
+    fieldset.form-group
+      .row
+        label.col-form-label.col-sm-2 Район
+        .col-sm-10
+          each district in districts
+            .form-check.form-check-radio
+              label.form-check-label(for=district.id) #{district.name}
+                input.form-check-input(type='radio' id=district.id value=district.name name='district' checked=(district.name===building.district))
+                span.circle
+                  span.check
+    .form-group.row
+      .col-sm-10
+        button.btn.btn-rose(type='submit') Сохранить

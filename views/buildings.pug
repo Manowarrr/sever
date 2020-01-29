@@ -1,0 +1,42 @@
+extends layout
+
+include mixins/_buildingTableRow
+
+block content
+  .row
+    .btn-group.mx-auto
+      each d in districts
+        a.btn.mr-1(href=`/buildings/districts/${d._id}` class=`${d._id==district ? 'btn-rose' : 'mybtn-rose'}`) #{d._id}: #{d.count}
+  .row
+    .col-md-12
+      .card
+        .card-header.card-header-rose.card-header-icon
+          .card-icon
+            i.material-icons assignment
+          h4.card-title Список объектов
+        .card-body
+          .material-datatables
+            table.table.table-shopping.table-no-bordered.table-hover(id='buildingTable' width='100%' cellspacing='0' style='width:100%')
+              thead
+                tr
+                  th.disabled-sorting.text-center Фото
+                  th.text-center Адрес
+                  th.disabled-sorting.text-center Назнач-е
+                  th.text-center Площадь
+                  th.text-center Цена
+                  th.text-center Этаж-ть
+                  th.disabled-sorting.text-center Кад. н-р
+                  th.disabled-sorting.text-center 
+              tfoot
+                tr
+                  th.text-center Фото
+                  th.text-center Адрес
+                  th.text-center Назначение
+                  th.text-center Площадь
+                  th.text-center Цена
+                  th.text-center Этажность
+                  th.text-center Кад. н-р
+                  th.text-center 
+              tbody
+                each building in buildings
+                  +buildingTableRow(building)

@@ -1,0 +1,109 @@
+doctype html
+html
+  head
+    title= sever
+    link(rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/dist/style.css')
+    link(rel="shortcut icon" type="image/png" href="/images/icons/favicon.png")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no")
+  body
+    .wrapper
+      .sidebar(data-color='rose' data-background-color='black' data-image='/images/photos/sidebar.jpg')
+        .logo.text-center
+          a.simple-text.logo-normal(href='/') АО "СЕВЕР"
+        .sidebar-wrapper
+          .user
+            .photo
+              img(src='https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png')
+            .user-info
+              a.username(data-toggle='collapse' href='#user-sidebar-collapse')
+                span #{user.name}
+                  b.caret
+              .collapse(id='user-sidebar-collapse')
+                ul.nav
+                  li.nav-item
+                    a.nav-link(href='/account')
+                      span.sidebar-mini П
+                      span.sidebar-normal Профиль
+                  li.nav-item
+                    a.nav-link(href='#')
+                      span.sidebar-mini З
+                      span.sidebar-normal Задачи  
+          ul.nav
+            each item in h.menu
+              li.nav-item(class=(currentPath.startsWith(item.slug) ? 'active' : ''))
+                a.nav-link(href=item.slug) 
+                  i.material-icons image
+                  p #{item.title}
+      .main-panel
+        nav.navbar.navbar-expand-lg.navbar-transparent.navbar-absolute.fixed-top
+          .container-fluid
+            .navbar-wrapper
+              .navbar-minimize
+                button.btn.btn-just-icon.btn-white.btn-fab.btn-round(id='minimizeSidebar')
+                  i.material-icons.text_align-center.visible-on-sidebar-regular more_vert
+                  i.material-icons.design_bullet-list-67.visible-on-sidebar-mini view_list
+              span.navbar-brand #{mainTitle}
+            button.navbar-toggler(type='button' data-toggle='collapse' aria-controls='navigation-index' aria-expanded='false' aria-label='Toggle navigation')
+              span.sr-only Toggle navigation
+              span.navbar-toggler-icon.icon-bar
+              span.navbar-toggler-icon.icon-bar
+              span.navbar-toggler-icon.icon-bar
+            .collapse.navbar-collapse.justify-content-end
+              form.navbar-form.sever-search
+                input.form-control(type='text' placeholder='Поиск')
+                ul.card.sever-search__results.m-0.p-1
+              ul.navbar-nav
+                if buttonTitle
+                  li.nav-item
+                    a.nav-link.btn.btn-round.btn-white(href=`/add${buttonTitle==='объект'?'Building':'Tenant'}`) Добавить #{buttonTitle}
+                li.nav-item
+                  a.nav-link(href='#')
+                    i.material-icons notifications
+                    span.notification 5
+                li.nav-item
+                  a.nav-link(href='/logout')
+                    i.material-icons exit_to_app
+    
+        .content
+          .container-fluid
+            block messages
+              if locals.flashes
+                .flash-messages
+                  - const categories = Object.keys(locals.flashes)
+                  each category in categories
+                    each message in flashes[category]
+                      .alert(class=`alert-${category=='error'?'danger':category}`)!= message
+                        button.close(onClick="this.parentElement.remove()") &times;       
+            block content
+
+        .footer   
+          .container-fluid
+            .copyright.float-right &copy;&nbsp;2019            
+
+
+    block scripts
+      script(src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&libraries=places`)
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.9.1/docxtemplater.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.0.2/jszip-utils.js")
+      script(src="/dist/generateDoc.js")
+      script(src='/dist/App.bundle.js')
+      script(src='https://unpkg.com/axios/dist/axios.min.js')
+      script(src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js")
+      script(src='/dist/plugins/jquery.min.js')
+      script(src='/dist/plugins/popper.min.js')
+      script(src='/dist/plugins/bootstrap-material-design.min.js')
+      script(src='/dist/plugins/jquery.dataTables.min.js')
+      script(src='/dist/plugins/moment.min.js')
+      script(src='/dist/plugins/bootstrap-datetimepicker.min.js')
+      script(src='/dist/test1.js')
+
+      
+
+
+
+      
+ 

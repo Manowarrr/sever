@@ -1,0 +1,51 @@
+doctype html
+html
+  head
+    title= `${title} | ${h.siteName}`
+    link(rel='stylesheet', href='/dist/style.css')
+    link(rel="shortcut icon" type="image/png" href="/images/icons/doughnut.png")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+  body
+    nav.navbar.navbar-dark.fixed-top.bg-dark.flex-md-nowrap.p-0.shadow
+      a.navbar-brand.col-sm-3.col-md-2.mr-0(href="#") АО "Север"
+      input.form-control.form-control-dark.w-100(type="text" placeholder="Поиск" aria-label="Search")
+      ul.navbar-nav.px-3
+        li.nav-item.text-nowrap
+          a.nav-link(href="#") Выйти
+
+    .container-fluid
+      .row
+        nav.col-md-2.d-none.d-md-block.bg-light.sidebar
+          .sidebar-sticky
+            ul.nav.flex-column
+              li.nav-item
+                a.nav-link.active(href="#") Объекты
+              li.nav-item
+                a.nav-link.active(href="#") Арендаторы
+              li.nav-item
+                a.nav-link.active(href="#") Договоры
+              li.nav-item
+                a.nav-link.active(href="#") Статистика
+              li.nav-item
+                a.nav-link.active(href="#") Сотрудники
+
+        main.col-md-9.ml-sm-auto.col-lg-10.px-4(role="main")
+          .container
+
+            block messages
+              if locals.flashes
+                .inner
+                  .flash-messages
+                    - const categories = Object.keys(locals.flashes)
+                    each category in categories
+                      each message in flashes[category]
+                        .flash(class=`flash--${category}`)
+                          p.flash__text!= message
+                          button.flash__remove(onClick="this.parentElement.remove()") &times;
+
+            .content
+              block content
+
+    block scripts
+      script(src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&libraries=places`)
+      script(src="/dist/App.bundle.js")

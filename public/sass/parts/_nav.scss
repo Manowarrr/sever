@@ -1,0 +1,26 @@
+.navbar--main {
+  .navbar-brand {
+    margin-right: 0;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    border-right: 2px solid rgba(255, 255, 255, 0.5);
+
+    svg {
+      width: 30px;
+      height: 30px;
+      fill: #5fcf80;
+    }
+    &:hover {
+      color: white;
+      svg {
+        fill: white;
+      }
+    }
+  }
+
+  .nav-item {
+    .nav-link:hover {
+      color: white;
+    }
+  }
+}

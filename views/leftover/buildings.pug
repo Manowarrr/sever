@@ -1,0 +1,14 @@
+extends layout
+
+include mixins/_buildingCard
+
+block content
+  .row.bg-white.box.search-box.mb-4
+    .input-group
+      input.form-control(type='text' placeholder='Поиск')
+      .input-group-append 
+        a.btn.btn-outline-secondary(href='/add') Добавить объект
+  .row.mb-5
+    each building in buildings
+      .col-sm-3.mb-4.card-flip
+        +buildingCard(building)

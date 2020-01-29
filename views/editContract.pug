@@ -1,0 +1,7 @@
+extends layout
+
+include mixins/_contractEditForm
+
+block content
+  h2.text-center.mb-2 #{title}
+  +contractEditForm(contract)

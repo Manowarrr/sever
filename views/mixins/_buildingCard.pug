@@ -1,0 +1,23 @@
+mixin buildingCard(building = {})
+  .rotating-card-container.manual-flip
+    .card.card-product.card-rotate.card-background
+      .front.front-background
+        .card-body.pb-0.pt-1
+          img.card-img-top(src=`/uploads/${building.mainphoto || 'building.jpg'}`)
+          h3.card-title.mt-1 
+            a(href=`/buildings/${building.slug}`) #{building.name}
+          .footer.text-right
+            a.btn.btn-success.btn-link.text-left(href=`/buildings/${building._id}/edit`)
+              i.material-icons edit
+            button.btn.btn-rose.btn-round.btn-just-icon.rotate-btn.ml-auto(onClick="this.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add('hover')")
+              i.material-icons loop
+      .back.back-background
+        .card-body.m-0
+          h4.card-header.card-header-rose  Характеристики
+          ul.list-group.list-group-flush
+            li.list-group-item Площадь: #{building.place} м/кв
+            li.list-group-item Цена: #{building.price} р.
+          .footer.text-right
+            button.btn.btn-rose.btn-round.btn-just-icon.ml-auto(onClick="this.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('hover')")
+              i.material-icons loop
+

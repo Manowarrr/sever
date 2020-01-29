@@ -1,0 +1,171 @@
+extends layout
+
+include mixins/_contractCard
+
+block content
+  ul.nav.nav-pills.nav-pills-rose.nav-pills-icons.justify-content-center(role='tablist')
+    each menuItem in h.buildingMenu
+      li.nav-item
+        a.nav-link(class=`${menuItem.name==='Характеристики'?'nav-link active':'nav-link'}` data-toggle='tab' href=menuItem.link role='tablist')= menuItem.name
+          i.material-icons info
+  .tab-content.tab-space.tab-subcategories
+    .tab-pane.active(id='link1')
+      .card
+        .card-body 
+          ul.list-group.list-group-flush
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Название
+                .col 
+                  span.text-uppercase #{building.name}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Примечание
+                .col 
+                  span.text-uppercase #{building.description}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Район
+                .col 
+                  span.text-uppercase #{building.district}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Назначение
+                .col 
+                  span.text-uppercase #{building.purpose}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Площадь
+                .col 
+                  span.text-uppercase #{building.place} м/кв
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Свободная площадь
+                .col 
+                  span.text-uppercase #{building.freeSpace} м/кв
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Занятая площадь
+                .col 
+                  span.text-uppercase #{building.occupiedSpace} м/кв
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Заполняемость
+                .col 
+                  span.text-uppercase #{building.occupiedPercent} %
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Цена
+                .col 
+                  span.text-uppercase #{building.price} р.
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Этажность
+                .col 
+                  span.text-uppercase #{building.floors}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Кадастровый н-р
+                .col 
+                  span.text-uppercase #{building.cadastr}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Количество договоров
+                .col 
+                  span.text-uppercase #{building.contractNumber}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Количество арендаторов
+                .col 
+                  span.text-uppercase #{building.tenantNumber}
+            li.list-group-item
+              .row
+                img.img-fluid(src=h.staticMap(building.location.coordinates))
+    .tab-pane(id='link2')
+      .card
+        .card-header
+          form(action=`/addGallery/${building._id}` method='POST' enctype='multipart/form-data')
+            .form-row
+              .form-group.col.form-file-upload.form-file-multiple
+                input.inputFileHidden(type='file' multiple='' name='gallery' id='gallery' accept='image/*')
+                .input-group
+                  input.form-control.inputFileVisible(type='text' placeholder='Загрузите фотографии для фотогалереи')
+                  span.input-group-btn
+                    button.btn.btn-fab.btn-round.btn-warning(type='button')
+                      i.material-icons layers
+            .form-row
+              .col-sm-10
+                button.btn.btn-rose(type='submit') Загрузить
+        .card-body 
+          .carousel.slide(id='galleryCarousel' data-ride='carousel')
+            ol.carousel-indicators
+              each galleryPhoto, index in building.gallery
+                li(data-target='#galleryCarousel' data-slide-to=index class=`${index==0?'active':''}`)
+            .carousel-inner
+              each galleryPhoto, index in building.gallery
+                .carousel-item(class=`${index==0?'active':''}`)
+                  img.d-block.w-100(src=`/uploads/${galleryPhoto}`)
+            .carousel-control-prev(href='#galleryCarousel' role='button' data-slide='prev')
+              span.carousel-control-prev-icon.text-rose(aria-hidden='true')
+              span.sr-only Назад
+            .carousel-control-next(href='#galleryCarousel' role='button' data-slide='next')
+              span.carousel-control-next-icon(aria-hidden='true')
+              span.sr-only Вперед
+    .tab-pane(id='link3')
+      .card
+        .card-header
+          form(action=`/addFiles/${building._id}` method='POST' enctype='multipart/form-data')
+            .form-row
+              .form-group.col.form-file-upload.form-file-multiple
+                input.inputFileHidden(type='file' multiple='' name='files' id='files')
+                .input-group
+                  input.form-control.inputFileVisible(type='text' placeholder='Загрузите документы')
+                  span.input-group-btn
+                    button.btn.btn-fab.btn-round.btn-warning(type='button')
+                      i.material-icons layers
+            .form-row
+              .col-sm-10
+                button.btn.btn-rose(type='submit') Загрузить
+        .card-body 
+          ul.list-group.list-group-flush
+            each file in building.files
+              li.list-group-item
+                a.text-uppercase(href=`/uploads/${file.path}`) #{file.name}
+    .tab-pane(id='link4')
+      .row.bg-white
+        .col.text-center.py-2
+          a.btn.btn-rose(href=`/addContract/${building._id}` style='color:white') добавить договор
+      .row
+        each contract in building.contracts
+          .col-md-4
+            +contractCard(contract)
+
+
+
+

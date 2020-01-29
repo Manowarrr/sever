@@ -1,0 +1,13 @@
+mixin tenantTableRow(tenant={})
+  tr
+    td.text-center.td-name
+      a(href=`/tenants/${tenant.slug}` style='color:#E81E63') #{tenant.name}
+    td.text-center #{tenant.address}
+    td.td-number #{tenant.inn}
+    td.td-number.text-center #{tenant.phone}
+    td.text-center #{tenant.email}
+    td.text-center  #{tenant.person[0].position} #{tenant.person[0].name}
+    td.text-center
+      a.btn.btn-success.btn-link.text-left(href=`/tenants/${tenant._id}/edit`)
+        i.material-icons edit
+    

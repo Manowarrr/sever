@@ -1,0 +1,40 @@
+mixin contractAddForm()
+  form.bg-white.px-3.py-3.mb-5(action=`/addContract` method='POST')
+    .form-row
+      .form-group.col
+        label(for='name') Название
+        input.form-control(type='text' name='name')
+    .form-row
+      .form-group.col
+        label(for='roomNumber') Номера помещений
+        input.form-control(type='text' name='roomNumber')
+    .form-row
+      .form-group.col
+        label.d-block(for='tenant') Арендатор
+        select.btn.btn-rose(name='tenant')
+          each tenant in tenants
+            option(value=tenant._id) #{tenant.name}
+    if building
+      .form-row
+        .form-group.col-md-6
+          label(for='startDate') Дата начала
+          input.form-control.datepicker(type='text' name='startDate')
+        .form-group.col-md-6
+          label(for='finishDate') Дата окончания
+          input.form-control.datepicker(type='text' name='finishDate')
+    .form-row
+      .form-group.col-md-6
+        label(for='space') Площадь
+        input.form-control(type='number'  step='any' name='space')
+      .form-group.col-md-6
+        label(for='price') Цена
+        input.form-control(type='text' name='price')
+    if building
+      .form-row
+        .form-group.col-md-6
+          input.form-control(type='hidden' name='building' value=building._id)
+        .form-group.col-md-6
+          input.form-control(type='hidden' name='buildingSlug' value=building.slug)
+    .form-group.row
+      .col-sm-10
+        button.btn.btn-rose(type='submit') Сохранить

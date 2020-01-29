@@ -1,0 +1,36 @@
+extends layout
+
+include mixins/_tenantTableRow
+
+block content
+  .row
+    .col-md-12
+      .card
+        .card-header.card-header-rose.card-header-icon
+          .card-icon
+            i.material-icons assignment
+          h4.card-title Список арендаторов
+        .card-body
+          .material-datatables
+            table.table.table-shopping.table-no-bordered.table-hover(id='tenantTable' width='100%' cellspacing='0' style='width:100%')
+              thead
+                tr
+                  th.disabled-sorting.text-center Название
+                  th.disabled-sorting.text-center Адрес
+                  th.disabled-sorting.text-center ИНН
+                  th.disabled-sorting.text-center Телефон
+                  th.disabled-sorting.text-center Email
+                  th.disabled-sorting.text-center Отв-е лицо
+                  th.disabled-sorting.text-center 
+              tfoot
+                tr
+                  th.disabled-sorting.text-center Название
+                  th.disabled-sorting.text-center Адрес
+                  th.disabled-sorting.text-center ИНН
+                  th.disabled-sorting.text-center Телефон
+                  th.disabled-sorting.text-center Email
+                  th.disabled-sorting.text-center Отв-е лицо
+                  th.disabled-sorting.text-center 
+              tbody
+                  each tenant in tenants
+                    +tenantTableRow(tenant)

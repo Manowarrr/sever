@@ -1,0 +1,77 @@
+extends layout
+
+include mixins/_contractCard
+
+block content
+  ul.nav.nav-pills.nav-pills-rose.nav-pills-icons.justify-content-center(role='tablist')
+    each menuItem in h.tenantMenu
+      li.nav-item
+        a.nav-link(class=`${menuItem.name==='Информация'?'nav-link active':'nav-link'}` data-toggle='tab' href=menuItem.link role='tablist')= menuItem.name
+          i.material-icons info
+  .tab-content.tab-space.tab-subcategories
+    .tab-pane.active(id='link1')
+      .card
+        .card-body 
+          ul.list-group.list-group-flush
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Название
+                .col 
+                  span.text-uppercase #{tenant.name}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Адрес
+                .col 
+                  span.text-uppercase #{tenant.address}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b ИНН
+                .col 
+                  span.text-uppercase #{tenant.inn}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Телефон
+                .col 
+                  span.text-uppercase #{tenant.phone}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Email
+                .col 
+                  span.text-uppercase #{tenant.email}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b #{tenant.person[0].position}
+                .col 
+                  span.text-uppercase #{tenant.person[0].name}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b количество договоров
+                .col 
+                  span.text-uppercase #{tenant.contractNumber}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Статус
+                .col 
+                  span.text-uppercase #{tenant.status}
+    .tab-pane(id='link2')
+      .row
+        each contract in tenant.contracts
+          .col-md-4
+            +contractCard(contract)
+

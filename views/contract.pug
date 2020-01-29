@@ -1,0 +1,155 @@
+extends layout
+
+block content
+  ul.nav.nav-pills.nav-pills-rose.nav-pills-icons.justify-content-center(role='tablist')
+    each menuItem in h.contractMenu
+      li.nav-item
+        a.nav-link(class=`${menuItem.name==='Информация'?'nav-link active':'nav-link'}` data-toggle='tab' href=menuItem.link role='tablist')= menuItem.name
+          i.material-icons info
+  .tab-content.tab-space.tab-subcategories
+    .tab-pane.active(id='link1')
+      .card
+        .card-body 
+          ul.list-group.list-group-flush
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Название
+                .col 
+                  span.text-uppercase #{contract.name}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Адрес
+                .col 
+                  a(href=`/buildings/${contract.building.slug}` style='color:#E81E63') #{contract.building.name}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Арендатор
+                .col 
+                  a(href=`/tenant/${contract.tenant.slug}` style='color:#E81E63') #{contract.tenant.name}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Дата начала
+                .col 
+                  span.text-uppercase #{h.formatDate(contract.startDate)}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Дата окончания
+                .col 
+                  span.text-uppercase #{h.formatDate(contract.finishDate)}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Площадь
+                .col 
+                  span.text-uppercase #{contract.space} кв.м.
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Номера помещений
+                .col 
+                  span.text-uppercase #{contract.roomNumber} 
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Цена
+                .col 
+                  span.text-uppercase #{contract.price} р/кв.м.
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Цена за месяц с НДС
+                .col 
+                  span.text-uppercase #{contract.priceMonth} р.
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Цена за год с НДС
+                .col 
+                  span.text-uppercase #{contract.priceYear} р.
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b НДС месяц
+                .col 
+                  span.text-uppercase #{contract.ndsMonth} р.
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b НДС год
+                .col 
+                  span.text-uppercase #{contract.ndsYear} р.
+    .tab-pane(id='link2')
+      .card
+        .card-header
+          form(action=`/addContractFiles/${contract._id}` method='POST' enctype='multipart/form-data')
+            .form-row
+              .form-group.col.form-file-upload.form-file-multiple
+                input.inputFileHidden(type='file' multiple='' name='files' id='files')
+                .input-group
+                  input.form-control.inputFileVisible(type='text' placeholder='Загрузите договор')
+                  span.input-group-btn
+                    button.btn.btn-fab.btn-round.btn-warning(type='button')
+                      i.material-icons layers
+            .form-row
+              .col-sm-10
+                button.btn.btn-rose(type='submit') Загрузить
+      .card
+        .card-header
+          form(action=`/addContractClaims/${contract._id}` method='POST' enctype='multipart/form-data')
+            .form-row
+              .form-group.col.form-file-upload.form-file-multiple
+                input.inputFileHidden(type='file' multiple='' name='claims' id='claims')
+                .input-group
+                  input.form-control.inputFileVisible(type='text' placeholder='Загрузите претензии')
+                  span.input-group-btn
+                    button.btn.btn-fab.btn-round.btn-warning(type='button')
+                      i.material-icons layers
+            .form-row
+              .col-sm-10
+                button.btn.btn-rose(type='submit') Загрузить
+      .card
+        .card-header Претензии
+        .card-body 
+          ul.list-group.list-group-flush
+            each claim in contract.claims
+              li.list-group-item
+                a.text-uppercase(href=`/uploads/${claim.path}`) #{claim.name}
+      .card
+        .card-header 
+          form
+            .form-row
+              .form-group.col
+                button.btn.btn-rose(type='submit', onclick="generate()") Сформировать претензию
+                input.form-control(type='text' id='money' placeholder='Введите сумму')
+          .form-row
+              input.form-control(type='hidden' id='tenantName' value=contract.tenant.name)
+              input.form-control(type='hidden' id='tenantAddress' value=contract.tenant.address)
+              input.form-control(type='hidden' id='buildingAddress' value=contract.building.address)
+              input.form-control(type='hidden' id='roomNumber' value=contract.roomNumber)
+              input.form-control(type='hidden' id='space' value=contract.space)
+              input.form-control(type='hidden' id='contractName' value=contract.name)
+              input.form-control(type='hidden' id='startDate' value=`${h.formatDate(contract.startDate)}`)
+    .tab-pane(id='link2')
+      .card
+        .card-header
+          h4.card-title Осмотры
+        .card-body 
+          p Test
+

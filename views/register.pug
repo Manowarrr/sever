@@ -1,0 +1,29 @@
+extends mainLayout
+
+block content
+  .row
+    .col-md-6.ml-auto.mr-auto
+      .card.card-signup
+        h2.card-title.text-center Регистрация
+        .card-body
+          form.form(method='POST' action='/register')
+            .form-group.has-default
+              .input-group
+                .input-group-prepend
+                  span.input-group-text
+                    i.material-icons face
+                input.form-control(type='text' name='name' id='name' placeholder='Имя...')
+            .form-group.has-default
+              .input-group
+                .input-group-prepend
+                  span.input-group-text
+                    i.material-icons mail
+                input.form-control(type='text' name='email' id='email' placeholder='E-mail...')
+            .form-group.has-default
+              .input-group
+                .input-group-prepend
+                  span.input-group-text
+                    i.material-icons mail
+                input.form-control(type='password' name='password' id='password' placeholder='Пароль...')
+            .text-center.text-white
+              button.btn.btn-primary.btn-round.mt-4(type='submit') Начать работу 

@@ -1,0 +1,25 @@
+mixin contractEditForm(contract = {})
+  form.bg-white.px-3.py-3.mb-5(action=`/addContract/${contract._id}` method='POST')
+    .form-row
+      .form-group.col
+        label(for='name') Название
+        input.form-control(type='text' name='name' value=contract.name)
+    .form-row
+      .form-group.col
+        label.d-block(for='tenant') Арендатор
+        select.btn.btn-rose(name='tenant')
+          each tenant in tenants
+            option(value=tenant._id selected=`${tenant.name===contract.tenant.name?'true':'false'}`) #{tenant.name}
+    .form-row
+      .form-group.col-md-6
+        label(for='space') Площадь
+        input.form-control(type='number' step='any' name='space' value=contract.space)
+      .form-group.col-md-6
+        label(for='price') Цена
+        input.form-control(type='text' name='price' value=contract.price)
+    .form-group.row
+        label(for='roomNumber') Номера помещение
+        input.form-control(type='text' name='roomNumber' value=contract.roomNumber)
+    .form-group.row
+      .col-sm-10
+        button.btn.btn-rose(type='submit') Сохранить

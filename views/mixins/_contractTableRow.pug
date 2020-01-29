@@ -1,0 +1,17 @@
+mixin contractTableRow(contract={})
+  tr
+    td.text-center.td-name
+      a(href=`/contracts/${contract.slug}` style='color:#E81E63') #{contract.name}
+    td.text-center.td-number #{contract.price} р.
+    td.td-number.text-center #{contract.space} м/кв
+    td.text-center
+      a(href=`/tenants/${contract.tenant.slug}` style='color:#E81E63') #{contract.tenant.name}
+    td.text-center #{h.formatDate(contract.startDate)}
+    td.text-center #{h.formatDate(contract.finishDate)}
+    td.text-center 
+      if contract.files[0]
+        a.text-uppercase(href=`/uploads/${contract.files[0].path}`) #{contract.files[0].name}
+    td.text-center
+      a.btn.btn-success.btn-link.text-left(href=`/contracts/${contract._id}/edit`)
+        i.material-icons edit
+    

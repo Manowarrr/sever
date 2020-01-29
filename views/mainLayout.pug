@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    title= sever
+    link(rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/dist/style.css')
+    link(rel="shortcut icon" type="image/png" href="/images/icons/favicon.png")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no")
+  body.off-canvas-sidebar
+    nav.navbar.navbar-expand-lg.navbar-transparent.navbar-absolute.fixed-top.text-white
+      .container
+        .navbar-wrapper
+          a.navbar-brand(href='#') АО "Север"
+        button.navbar-toggler(type='button' data-toggle='collapse' aria-controls='navigation-index' aria-expanded='false' aria-label='toggle navigation')
+          span.sr-only toggle navigation
+          span.navbar-toggler-icon.icon-bar
+          span.navbar-toggler-icon.icon-bar
+          span.navbar-toggler-icon.icon-bar
+        .collapse.navbar-collapse.justify-content-end
+          ul.navbar-nav
+            if user
+              li.nav-item
+                a.nav-link(href='/buildings') Панель управления
+            else
+              li.nav-item
+                a.nav-link(href='/login') Войти
+            //- li.nav-item
+            //-   a.nav-link(href='/register') Регистрация
+    .wrapper.wrapper-full-page
+      .page-header.register-page.header-filter(filter-color='black' style='background-image:url("/uploads/register.jpg")')
+        .container
+          block messages
+            if locals.flashes
+              .flash-messages
+                - const categories = Object.keys(locals.flashes)
+                each category in categories
+                  each message in flashes[category]
+                    .alert(class=`alert-${category=='error'?'danger':category}`)!= message
+                      button.close(onClick="this.parentElement.remove()") &times; 
+          block content
+        .footer
+          .container
+            .copyright.text-white.float-right &copy;&nbsp;2019
+                       

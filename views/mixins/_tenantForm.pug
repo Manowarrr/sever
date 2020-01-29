@@ -1,0 +1,30 @@
+mixin tenantForm(tenant = {})
+  form.bg-white.px-3.py-3.mb-5(action=`/addTenant/${tenant._id || ''}` method='POST')
+    .form-row
+      .form-group.col-md-6
+        label(for='name') Название
+        input.form-control(type='text' name='name' value=tenant.name)
+      .form-group.col-md-6
+        label(for='inn') ИНН
+        input.form-control(type='text' name='inn' value=tenant.inn)
+    .form-row
+      .form-group.col
+        label(for='address') Адрес
+        input.form-control(type='text' name='address' value=tenant.address)
+    .form-row
+      .form-group.col-md-6
+        label(for='phone') Телефон
+        input.form-control(type='phone' name='phone' value=tenant.phone)
+      .form-group.col-md-6
+        label(for='email') Email
+        input.form-control(type='email' name='email' value=tenant.email)
+    .form-row
+      .form-group.col-md-6
+        label(for='personname') Лицо, имеющее право подписи
+        input.form-control(type='text' id='personname' name='person[name]' value=(tenant.person && tenant.person[0].name))
+      .form-group.col-md-6
+        label(for='personposition') Должность
+        input.form-control(type='text' id='personposition' name='person[position]' value=(tenant.person && tenant.person[0].position))
+    .form-group.row
+      .col-sm-10
+        button.btn.btn-rose(type='submit') Сохранить

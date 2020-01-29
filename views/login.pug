@@ -1,0 +1,30 @@
+extends mainLayout
+
+block content
+  .row
+    .col-lg-4.col-md-6.col-sm-8.ml-auto.mr-auto
+      form.form(method='POST' action='/login')
+        .card.card-login.card-hidden
+          .card-header.card-header-rose.text-center
+            h2.card-title Вход
+          .card-body
+            .form-group.has-default
+              .input-group
+                .input-group-prepend
+                  span.input-group-text
+                    i.material-icons face
+                input.form-control(type='text' name='name' id='name' placeholder='Имя...')
+            .form-group.has-default
+              .input-group
+                .input-group-prepend
+                  span.input-group-text
+                    i.material-icons mail
+                input.form-control(type='email' name='email' id='email' placeholder='E-mail...')
+            .form-group.has-default
+              .input-group
+                .input-group-prepend
+                  span.input-group-text
+                    i.material-icons mail
+                input.form-control(type='password' name='password' id='password' placeholder='Пароль...')
+          .card-footer.justify-content-center
+            button.btn.btn-rose.btn-link.btn-lg(type='submit') Начать работу 
