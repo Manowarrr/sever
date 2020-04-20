@@ -24,6 +24,7 @@ require('./models/Building');
 require('./models/User');
 require('./models/Tenant');
 require('./models/Contract');
+require('./models/Inspection');
 
 // Start our app!
 const app = require('./app');

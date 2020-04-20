@@ -47,7 +47,8 @@ exports.account = (req, res) => {
 exports.updateAccount = async (req, res) => {
   const updates = {
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email,
+    phone: req.body.phone
   }
 
   const user = await User.findOneAndUpdate(
@@ -57,4 +58,9 @@ exports.updateAccount = async (req, res) => {
   )
   req.flash('success', 'Профиль успешно отредактирован');
   res.redirect('back');
+}
+
+exports.getUsers = async (req, res) => {
+  const users = await User.find();
+  res.render('users', { users });
 }

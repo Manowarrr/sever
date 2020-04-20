@@ -48,6 +48,23 @@ exports.getBuildingsJson = async (req, res) => {
   res.json(buildings);
 }
 
+exports.deleteBuilding = async (req, res) => {
+  const building = await Building
+    .findOne({_id: req.params.id})
+    .populate({
+      path: 'contracts',
+      populate: { path: 'building' }       
+    });
+  if(Object.keys(building.contracts).length === 0) {
+    await Building.deleteOne({ _id: req.params.id });
+    req.flash('success', `Объект удален.`);
+    res.redirect(`/buildings/`);
+  } else {
+    req.flash('error', `У объекта есть договоры.`);
+    res.redirect(`/buildings/`);
+  }
+}
+
 exports.editBuilding = async (req, res) => {
   const building = await Building.findOne({ _id: req.params.id });
   res.render('editBuilding', { mainTitle: building.name, buttonTitle: 'Объект', title: 'Редактировать', building});
@@ -55,6 +72,7 @@ exports.editBuilding = async (req, res) => {
 
 exports.updateBuilding = async (req, res) => {
   req.body.location.type = 'Point';
+  req.body.isSelled = req.body.isSelled ? true : false;
   if(req.file) req.body.mainphoto = req.file.filename;
   const building = await Building.findOneAndUpdate({ _id: req.params.id }, req.body, {
     new: true,
@@ -89,16 +107,16 @@ exports.getBuildingBySlug = async (req, res, next) => {
     )
     .populate({
       path: 'contracts',
-      populate: { path: 'tenant' }       
-  });
-  
+      populate: { path: 'building' }       
+    });
+
   building.contractNumber = building.contracts.length;
   building.tenantNumber = building.contracts.length;
   building.freeSpace = building.contracts ? 
                        building.contracts.reduce((sum, current) => sum - current.space, building.place) : 0;
   building.occupiedSpace = building.place - building.freeSpace;
   building.occupiedPercent = building.occupiedSpace/building.place * 100;
-
+console.dir(building.contracts);
   if(!building) return next();
 
 
@@ -139,13 +157,25 @@ exports.chartDistricts = async (req, res) => {
 }
 
 exports.getBuildingsByDistrict = async (req, res) => {
-  let district = req.params.district || 'Все';
-  const districtQuery = district == 'Все' ? { $exists: true } : district;
+  let district = req.params.district;
+  let districtQuery;
+  let isSelled = false;
+  if(district == 'Все' || !district) {
+    districtQuery = { $exists: true };
+    district = 'Все';
+  } else if(district ==  'Проданные') {
+    districtQuery = { $exists: true };
+    isSelled = true;
+  } else {
+    districtQuery = district;
+  }
 
   const districtPromise = Building.getDistrictList();
-  const buildingsPromise = Building.find({ district: districtQuery });
-  const [districts, buildings] = await Promise.all([districtPromise, buildingsPromise]);
+  const buildingsPromise = Building.find({ district: districtQuery, isSelled: isSelled });
+  const selledBuildingsPromise = Building.find({ isSelled: true });
+  const [districts, buildings, selledBuildings] = await Promise.all([districtPromise, buildingsPromise, selledBuildingsPromise]);
   districts.push({ _id: 'Все', count: districts.reduce((sum, current) => sum + current.count, 0)});
+  districts.push({ _id: 'Проданные', count: selledBuildings.length});
 
   res.render('buildings', { mainTitle: 'Объекты', districts, buildings, district, buttonTitle: 'объект'});
 };

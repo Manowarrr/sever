@@ -6,11 +6,14 @@ mixin buildingTableRow(building={})
     td.text-center.td-name
       a(href=`/buildings/${building.slug}` style='color:#E81E63') #{building.name}
     td.text-center #{building.purpose}
-    td.td-number.text-center #{building.place} м/кв
-    td.td-number.text-center #{building.price} р.
+    td.td-number.text-center #{building.place}
+    td.td-number.text-center #{building.price}
+    //- td.td-number.text-center #{building.occupiedPercent}
     td.text-center #{building.floors}
     td.text-center #{building.cadastr}
-    td.text-center
-      a.btn.btn-success.btn-link.text-left(href=`/buildings/${building._id}/edit`)
+    td.td-actions.text-center
+      a.btn.btn-success.btn-link(href=`/buildings/${building._id}/edit`)
         i.material-icons edit
+      a.btn.btn-danger.btn-link(href=`/buildings/${building._id}/delete`)
+        i.material-icons close
     

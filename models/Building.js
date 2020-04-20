@@ -30,6 +30,10 @@ const buildingSchema = new mongoose.Schema({
       name: String
     }
   ],
+  isSelled: {
+    type: Boolean,
+    default: false
+  },
   location: {
     type: {
       type: String,
@@ -69,6 +73,7 @@ buildingSchema.pre('save', async function(next) {
 
 buildingSchema.statics.getDistrictList = function() {
   return this.aggregate([
+    { $match: { isSelled: false } },
     { $group: { _id: '$district', count: { $sum: 1 } } }
   ]);
 }

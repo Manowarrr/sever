@@ -55,6 +55,12 @@ mixin buildingForm(building = {})
                 input.form-check-input(type='radio' id=district.id value=district.name name='district' checked=(district.name===building.district))
                 span.circle
                   span.check
+    .div.form-check
+      label.form-check-label
+          input.form-check-input(type='checkbox' name='isSelled' value=building.isSelled checked=building.isSelled)
+          | ПРОДАН
+          span.form-check-sign
+            span.check
     .form-group.row
       .col-sm-10
         button.btn.btn-rose(type='submit') Сохранить

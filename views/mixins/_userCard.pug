@@ -1,0 +1,30 @@
+mixin userCard(user={})  
+  .col-4
+    .card
+      .card-header.card-header-icon.card-header-rose
+        .card-icon
+          i.material-icons perm_identity
+      .card-body
+        ul.list-group.list-group-flush
+          li.list-group-item
+            .row
+              .col 
+                span.text-rose.text-uppercase
+                  b Имя
+              .col 
+                span.text-uppercase #{user.name}
+          li.list-group-item
+            .row
+              .col 
+                span.text-rose.text-uppercase
+                  b E-mail
+              .col 
+                span.text-uppercase #{user.email}
+          li.list-group-item
+            .row
+              .col 
+                span.text-rose.text-uppercase
+                  b Телефон
+              .col 
+                span.text-uppercase #{user.phone}
+        button.btn.btn-rose.pull-right Добавить задачи

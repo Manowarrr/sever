@@ -6,6 +6,23 @@ exports.getTenants = async (req, res) => {
   res.render('tenants', { mainTitle: 'Арендаторы', tenants, buttonTitle: 'арендатора' });
 }
 
+exports.deleteTenant = async (req, res) => {
+  const tenant = await Tenant
+    .findOne({_id: req.params.id})
+    .populate({
+      path: 'contracts',
+      populate: { path: 'tenant' }       
+    });
+  if(Object.keys(tenant.contracts).length === 0) {
+    await Tenant.deleteOne({ _id: req.params.id });
+    req.flash('success', `Арендатор удален.`);
+    res.redirect(`/tenants/`);
+  } else {
+    req.flash('error', `У арендатора есть договоры.`);
+    res.redirect(`/tenants/`);
+  }
+}
+
 exports.addTenant = (req, res) => {
   res.render('editTenant', { mainTitle: 'Арендаторы', title: 'Добавить арендатора' });
 }

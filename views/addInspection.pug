@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h2.text-center.mb-2 #{title}
+  form.bg-white.px-3.py-3.mb-5(action=`/addInspection` method='POST' enctype='multipart/form-data')
+    .form-row
+      .form-group.col
+        label(for='name') Название
+        input.form-control(type='text' name='name')
+    .form-row
+      .form-group.col
+        label(for='date') Дата 
+        input.form-control.datepicker(type='text' name='date')
+    .form-row
+      .form-group.col.form-file-upload.form-file-multiple
+        input.inputFileHidden(type='file' multiple='' name='gallery' id='gallery' accept='image/*')
+        .input-group
+          input.form-control.inputFileVisible(type='text' placeholder='Загрузите фотографии для фотогалереи')
+          span.input-group-btn
+            button.btn.btn-fab.btn-round.btn-warning(type='button')
+              i.material-icons layers
+    //- .form-row
+    //-   .form-group.col.form-file-upload.form-file-multiple
+    //-     input.inputFileHidden(type='file' multiple='' name='files' id='files')
+    //-     .input-group
+    //-       input.form-control.inputFileVisible(type='text' placeholder='Загрузите документ')
+    //-       span.input-group-btn
+    //-         button.btn.btn-fab.btn-round.btn-warning(type='button')
+    //-           i.material-icons layers
+    .form-row
+      .form-group.col-md-6
+        input.form-control(type='hidden' name='contract' value=contract._id)
+    .form-group.row
+      .col-sm-10
+        button.btn.btn-rose(type='submit') Сохранить

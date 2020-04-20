@@ -1,0 +1,6 @@
+mixin inspectionTableRow(inspection={})
+  tr
+    td.text-center.td-name #{inspection.name}
+    td.text-center #{h.formatDate(inspection.date)}
+    td.text-center #{inspection.contract.name}
+

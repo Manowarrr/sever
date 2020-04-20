@@ -11,7 +11,9 @@ mixin contractTableRow(contract={})
     td.text-center 
       if contract.files[0]
         a.text-uppercase(href=`/uploads/${contract.files[0].path}`) #{contract.files[0].name}
-    td.text-center
-      a.btn.btn-success.btn-link.text-left(href=`/contracts/${contract._id}/edit`)
+    td.td-actions.text-center
+      a.btn.btn-success.btn-link(href=`/contracts/${contract._id}/edit`)
         i.material-icons edit
+      a.btn.btn-danger.btn-link(href=`/contracts/${contract._id}/delete`)
+        i.material-icons close
     

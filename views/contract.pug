@@ -146,10 +146,12 @@ block content
               input.form-control(type='hidden' id='space' value=contract.space)
               input.form-control(type='hidden' id='contractName' value=contract.name)
               input.form-control(type='hidden' id='startDate' value=`${h.formatDate(contract.startDate)}`)
-    .tab-pane(id='link2')
-      .card
-        .card-header
-          h4.card-title Осмотры
-        .card-body 
-          p Test
+    .tab-pane(id='link3')
+      .row.bg-white
+        .col.text-center.py-2
+          a.btn.btn-rose(href=`/addInspection/${contract._id}` style='color:white') добавить осмотр
+      .row
+        //- each inpection in contract.inspections
+          .col-md-4
+            //- +inspectionCard(inspection)
 

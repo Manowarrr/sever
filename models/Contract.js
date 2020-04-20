@@ -69,4 +69,10 @@ function autopopulate(next) {
 contractSchema.pre('find', autopopulate);
 contractSchema.pre('findOne', autopopulate);
 
+contractSchema.virtual('inspections', {
+  ref: 'Inspection', // what model to link?
+  localField: '_id', // which field on the store?
+  foreignField: 'contract' // which field on the review?
+});
+
 module.exports = mongoose.model('Contract', contractSchema);

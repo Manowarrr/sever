@@ -20,6 +20,7 @@ const userSchema = new Schema({
     required: 'Введите имя',
     trim: true
   },
+  phone: String,
   photo: String
 });
 

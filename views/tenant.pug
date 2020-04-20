@@ -59,9 +59,10 @@ block content
               .row
                 .col 
                   span.text-rose.text-uppercase
-                    b количество договоров
+                    b Договоры
                 .col 
-                  span.text-uppercase #{tenant.contractNumber}
+                  each contract in tenant.contracts
+                    a.row.text-uppercase(href=`/contracts/${contract.slug}` style='color:#E81E63') #{contract.name}
             li.list-group-item
               .row
                 .col 

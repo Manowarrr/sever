@@ -35,7 +35,8 @@ exports.menu = [
   { slug: '/buildings', title: 'Объекты' },
   { slug: '/tenants', title: 'Арендаторы' },
   { slug: '/contracts', title: 'Договоры' },
-  { slug: '/people', title: 'Сотрудники' },
+  { slug: '/inspections', title: 'Осмотры' },
+  { slug: '/users', title: 'Сотрудники' },
   { slug: '/stats', title: 'Статистика' },
   { slug: '/map', title: 'Карта' },
 ];

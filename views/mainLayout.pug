@@ -19,14 +19,14 @@ html
           span.navbar-toggler-icon.icon-bar
         .collapse.navbar-collapse.justify-content-end
           ul.navbar-nav
-            if user
-              li.nav-item
-                a.nav-link(href='/buildings') Панель управления
-            else
-              li.nav-item
-                a.nav-link(href='/login') Войти
-            //- li.nav-item
-            //-   a.nav-link(href='/register') Регистрация
+            //- if user
+            li.nav-item
+              a.nav-link(href='/buildings') Панель управления
+            //- else
+            li.nav-item
+              a.nav-link(href='/login') Войти
+            li.nav-item
+              a.nav-link(href='/register') Регистрация
     .wrapper.wrapper-full-page
       .page-header.register-page.header-filter(filter-color='black' style='background-image:url("/uploads/register.jpg")')
         .container

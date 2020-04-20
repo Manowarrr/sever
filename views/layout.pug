@@ -17,7 +17,7 @@ html
             .photo
               img(src='https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png')
             .user-info
-              a.username(data-toggle='collapse' href='#user-sidebar-collapse')
+              a.username(data-toggle='collapse' href='#user-sidebar-collapse' aria-expanded="false" aria-controls="user-sidebar-collapse")
                 span #{user.name}
                   b.caret
               .collapse(id='user-sidebar-collapse')

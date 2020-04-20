@@ -68,6 +68,12 @@ exports.getContracts = async (req, res) => {
   res.render('contracts', { mainTitle: 'Договоры', contracts });
 }
 
+exports.deleteContract = async (req, res) => {
+  await Contract.deleteOne({ _id: req.params.id });
+  req.flash('success', `Договор удален.`);
+  res.redirect(`/contracts/`);
+}
+
 exports.getContractsByDate = async (req, res) => {
   const contracts = await Contract.find(
     {startDate: {

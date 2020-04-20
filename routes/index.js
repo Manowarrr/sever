@@ -5,6 +5,7 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const tenantController = require('../controllers/tenantController');
 const contractController = require('../controllers/contractController');
+const inspectionController = require('../controllers/inspectionController');
 
 const { catchErrors } = require('../handlers/errorHandlers');
 
@@ -22,6 +23,33 @@ router.post('/register',
 
 router.post('/login', authController.login);
 
+// Users
+router.get('/users', 
+  authController.isLoggedIn,
+  catchErrors(userController.getUsers)
+);
+
+// Inspections
+router.get('/inspections', 
+  authController.isLoggedIn,
+  catchErrors(inspectionController.getInspections)
+);
+
+router.get('/addInspection/:id', 
+  authController.isLoggedIn,
+  catchErrors(inspectionController.addInspection)
+);
+
+router.get('/inspections', 
+  authController.isLoggedIn,
+  catchErrors(inspectionController.getInspections)
+);
+
+router.post('/addInspection', 
+  inspectionController.uploadGallery, 
+  //inspectionController.uploadFiles, 
+  catchErrors(inspectionController.createInspection)
+);
 // Buildings
 router.get('/buildings', 
   authController.isLoggedIn,
@@ -55,6 +83,10 @@ router.get('/buildings/:id/edit',
   authController.isLoggedIn,
   catchErrors(buildingController.editBuilding)
 );
+router.get('/buildings/:id/delete', 
+  authController.isLoggedIn,
+  catchErrors(buildingController.deleteBuilding)
+);
 router.get('/buildings/:slug', 
   authController.isLoggedIn,
   catchErrors(buildingController.getBuildingBySlug)
@@ -75,6 +107,10 @@ router.post('/addTenant',
 router.get('/tenants/:id/edit', 
   authController.isLoggedIn,
   catchErrors(tenantController.editTenant)
+);
+router.get('/tenants/:id/delete', 
+  authController.isLoggedIn,
+  catchErrors(tenantController.deleteTenant)
 );
 router.post('/addTenant/:id',
   catchErrors(tenantController.updateTenant)
@@ -103,6 +139,10 @@ router.post('/addContract',
 router.get('/contracts/:id/edit', 
   authController.isLoggedIn,
   catchErrors(contractController.editContract)
+);
+router.get('/contracts/:id/delete', 
+  authController.isLoggedIn,
+  catchErrors(contractController.deleteContract)
 );
 router.post('/addContract/:id',
   catchErrors(contractController.updateContract)
