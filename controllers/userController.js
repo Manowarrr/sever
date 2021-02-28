@@ -14,7 +14,7 @@ exports.loginForm = (req, res) => {
 exports.validateRegister = (req, res, next) => {
   req.sanitizeBody('name');
   req.checkBody('name', 'Введите имя').notEmpty();
-  req.checkBody('email', 'Неверный email').isEmail();
+  // req.checkBody('email', 'Неверный email').isEmail();
   req.sanitizeBody('email').normalizeEmail({
     remove_dots: false,
     remove_extension: false,
@@ -22,21 +22,22 @@ exports.validateRegister = (req, res, next) => {
   });
   req.checkBody('password', 'Введите пароль').notEmpty();
 
-  // Ошибка в пакете для валидации
-  // const errors = req.validateErrors();
+  const errors = req.validateErrors();
 
-  // if (errors) {
-  //   req.flash('error', errors.map(err => err.msg));
-  //   res.render('register', { body:req.body, flashes: req.flash()});
-  //   return
-  // }
+  if (errors) {
+    req.flash('error', errors.map(err => err.msg));
+    res.render('register', { body:req.body, flashes: req.flash()});
+    return
+  }
   next();
 }
 
 exports.register = async (req, res, next) => {
+
   const user = new User({ email: req.body.email, name: req.body.name });
   const register = promisify(User.register, User);
   await register(user, req.body.password);
+
   next();
 }
 

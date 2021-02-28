@@ -16,7 +16,7 @@ router.get('/login', userController.loginForm);
 router.get('/logout', authController.logout);
 
 router.post('/register', 
-  userController.validateRegister,
+  //userController.validateRegister,
   userController.register,
   authController.login
 );
@@ -34,21 +34,38 @@ router.get('/inspections',
   authController.isLoggedIn,
   catchErrors(inspectionController.getInspections)
 );
-
 router.get('/addInspection/:id', 
   authController.isLoggedIn,
   catchErrors(inspectionController.addInspection)
 );
-
 router.get('/inspections', 
   authController.isLoggedIn,
   catchErrors(inspectionController.getInspections)
 );
-
-router.post('/addInspection', 
-  inspectionController.uploadGallery, 
-  //inspectionController.uploadFiles, 
+router.post('/addInspection',
+  authController.isLoggedIn, 
+  inspectionController.uploadFiles, 
   catchErrors(inspectionController.createInspection)
+);
+router.get('/inspections/:slug', 
+  authController.isLoggedIn,
+  catchErrors(inspectionController.getInspectionBySlug)
+);
+router.get('/inspections/:id/edit', 
+  authController.isLoggedIn,
+  catchErrors(inspectionController.editInspection)
+);
+router.post('/updateGallery/:id',
+  inspectionController.uploadGallery, 
+  catchErrors(inspectionController.updateInspection)
+);
+router.get('/inspections/:slug', 
+  authController.isLoggedIn,
+  catchErrors(inspectionController.getInspectionBySlug)
+);
+router.get('/inspections/:id/delete', 
+  authController.isLoggedIn,
+  catchErrors(inspectionController.deleteInspection)
 );
 // Buildings
 router.get('/buildings', 
@@ -90,6 +107,20 @@ router.get('/buildings/:id/delete',
 router.get('/buildings/:slug', 
   authController.isLoggedIn,
   catchErrors(buildingController.getBuildingBySlug)
+);
+router.get('/buildings/:id/:path/deleteFile', 
+  authController.isLoggedIn,
+  catchErrors(buildingController.deleteBuildingFile)
+);
+
+// DEBT
+router.get('/debt', 
+  authController.isLoggedIn,
+  catchErrors(tenantController.getDebt)
+);
+router.post('/countDebt', 
+  tenantController.uploadDebtFile,
+  catchErrors(tenantController.countDebt)
 );
 
 // tenants
@@ -158,6 +189,14 @@ router.post('/addContractFiles/:id',
 router.post('/addContractClaims/:id', 
   contractController.uploadClaims, 
   catchErrors(contractController.updateClaims)
+);
+router.get('/contracts/:id/:path/deleteFile', 
+  authController.isLoggedIn,
+  catchErrors(contractController.deleteContractFile)
+);
+router.get('/contracts/:id/:path/deleteClaim', 
+  authController.isLoggedIn,
+  catchErrors(contractController.deleteContractClaim)
 );
 // user account
 router.get('/account',

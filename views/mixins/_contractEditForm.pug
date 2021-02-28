@@ -1,4 +1,4 @@
-mixin contractEditForm(contract = {})
+mixin contractEditForm(contract, tenants)
   form.bg-white.px-3.py-3.mb-5(action=`/addContract/${contract._id}` method='POST')
     .form-row
       .form-group.col
@@ -9,7 +9,10 @@ mixin contractEditForm(contract = {})
         label.d-block(for='tenant') Арендатор
         select.btn.btn-rose(name='tenant')
           each tenant in tenants
-            option(value=tenant._id selected=`${tenant.name===contract.tenant.name?'true':'false'}`) #{tenant.name}
+            if tenant.name===contract.tenant.name
+              option(value=tenant._id selected) #{tenant.name}
+            else 
+              option(value=tenant._id) #{tenant.name}
     .form-row
       .form-group.col-md-6
         label(for='space') Площадь

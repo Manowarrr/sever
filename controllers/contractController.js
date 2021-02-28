@@ -2,9 +2,14 @@ const mongoose = require('mongoose');
 const Contract = mongoose.model('Contract');
 const Building = mongoose.model('Building');
 const Tenant = mongoose.model('Tenant');
+const Inspection = mongoose.model('Inspection');
 const multer = require('multer');
 const jimp = require('jimp');
 const uuid = require('uuid');
+const fs = require('fs');
+const { promisify } = require('util');
+
+const unlinkAsync = promisify(fs.unlink);
 
 const multerOptions = {
   storage: multer.diskStorage({
@@ -21,6 +26,20 @@ const multerOptions = {
 
 exports.uploadFiles = multer(multerOptions).single('files');
 exports.uploadClaims = multer(multerOptions).single('claims');
+
+exports.deleteContractFile = async (req, res) => {
+  const contract = await Contract.findOneAndUpdate({ _id: req.params.id }, { $pull: { files: { path: req.params.path} } });
+  await unlinkAsync('./public/uploads/' + req.params.path);
+  req.flash('success', `Файл успешно удален`);
+  res.redirect(`/contracts/${contract.slug}`);
+}
+
+exports.deleteContractClaim = async (req, res) => {
+  const contract = await Contract.findOneAndUpdate({ _id: req.params.id }, { $pull: { claims: { path: req.params.path} } });
+  await unlinkAsync('./public/uploads/' + req.params.path);
+  req.flash('success', `Файл успешно удален`);
+  res.redirect(`/contracts/${contract.slug}`);
+}
 
 exports.updateFiles = async (req, res) => {
   const contract = await Contract.findOneAndUpdate({ _id: req.params.id }, { $push: { files: { path: req.file.filename, name: req.file.originalname } } }, {
@@ -69,11 +88,37 @@ exports.getContracts = async (req, res) => {
 }
 
 exports.deleteContract = async (req, res) => {
+  const contract = await Contract.findOne({_id: req.params.id});
+  const inspections = await Inspection.find({contract: req.params.id});
+
   await Contract.deleteOne({ _id: req.params.id });
+  await contract.files.forEach(item => unlinkAsync('./public/uploads/' + item.path));
+  await contract.claims.forEach(item => unlinkAsync('./public/uploads/' + item.path));
+
+  if(inspections) {
+    await Inspection.deleteMany({contract: req.params.id});
+    for(let i = 0; i  < inspections.length; i++) {
+      await unlinkAsync('./public/uploads/' + inspections[i].mainfile.path);
+      if(inspections[i].gallery) {
+        for(let  y = 0; y < inspections[i].gallery.length;  y++) {
+          await unlinkAsync('./public/uploads/' + inspections[i].gallery[y])
+        }
+      }
+    }
+  }
+
   req.flash('success', `Договор удален.`);
   res.redirect(`/contracts/`);
 }
+exports.deleteBuilding = async (req, res) => {
+  const building = await Building
+    .findOne({_id: req.params.id})
+    .populate({
+      path: 'contracts',
+      populate: { path: 'building' }       
+    });
 
+}
 exports.getContractsByDate = async (req, res) => {
   const contracts = await Contract.find(
     {startDate: {
@@ -83,6 +128,8 @@ exports.getContractsByDate = async (req, res) => {
   );
   res.render('contracts', { mainTitle: 'Договоры', contracts });
 }
+
+
 
 exports.editContract = async (req, res) => {
   const contractSearch = Contract.findOne({ _id: req.params.id });
@@ -101,7 +148,14 @@ exports.updateContract = async (req, res) => {
 }
 
 exports.getContractBySlug = async (req, res, next) => {
-  const contract = await Contract.findOne({ slug: req.params.slug}); 
+  const contract = await Contract.findOne(
+    { slug: req.params.slug}
+    ) 
+    .populate({
+      path: 'inspections',
+      populate: { path: 'contract' }       
+    });
+
   if(!contract) return next();
 
   contract.priceMonth = contract.space * contract.price;

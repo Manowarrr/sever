@@ -17,6 +17,10 @@ mixin buildingForm(building = {})
         input.form-control(type='text' id='address' name='location[address]' value=(building.location && building.location.address))
     .form-row
       .form-group.col
+        label(for='uk') Управляющая компания
+        input.form-control(type='text' id='uk' name='uk' value=(building.uk))
+    .form-row
+      .form-group.col
         label(for='lng') Долгота
         input.form-control(type='text' id='lng' name='location[coordinates][0]' required value=(building.location && building.location.coordinates[0]))
     .form-row

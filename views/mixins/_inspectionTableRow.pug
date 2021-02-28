@@ -1,6 +1,15 @@
 mixin inspectionTableRow(inspection={})
   tr
-    td.text-center.td-name #{inspection.name}
+    td.text-left.td-name
+      a(href=`/inspections/${inspection.slug}` style='color:#E81E63') #{inspection.name}
     td.text-center #{h.formatDate(inspection.date)}
-    td.text-center #{inspection.contract.name}
+    td.text-center
+      a(href=`/contracts/${inspection.contract.slug}` style='color:#E81E63') #{inspection.contract.name}
+    td.text-center 
+      a.text-uppercase(href=`/uploads/${inspection.mainfile.path}`) #{inspection.mainfile.name}
+    td.td-actions.text-center
+      a.btn.btn-success.btn-link(href=`/inspections/${inspection._id}/edit`)
+        i.material-icons edit
+      a.btn.btn-danger.btn-link(href=`/inspections/${inspection._id}/delete`)
+        i.material-icons close
 

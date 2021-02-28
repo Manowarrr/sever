@@ -19353,8 +19353,7 @@ function searchResultsHTML(results) {
       result.link = 'tenants';
     }
   });
-  console.dir(results);
-  console.dir(results);
+
   return results.map(function (result) {
     return '\n      <a href="/' + result.link + '/' + result.slug + '" class="sever-search__link p-2">\n        ' + result.name + '\n      </a>\n    ';
   }).join('');

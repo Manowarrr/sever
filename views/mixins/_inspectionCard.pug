@@ -1,0 +1,23 @@
+mixin inspectionCard(inspection={})  
+  .card
+    .card-header.card-header-icon.card-header-rose
+      .card-icon
+        i.material-icons store
+    .card-body
+      ul.list-group.list-group-flush
+        li.list-group-item
+          .row
+            .col 
+              span.text-rose.text-uppercase
+                b Название
+            .col 
+              span.text-uppercase #{inspection.name}
+        li.list-group-item
+          .row
+            .col 
+              span.text-rose.text-uppercase
+                b Дата
+            .col 
+              span.text-uppercase #{h.formatDate(inspection.date)}
+      a.btn.btn-rose.pull-right(href=`/inspections/${inspection.slug}`) Просмотр
+        

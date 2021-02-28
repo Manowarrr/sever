@@ -1,0 +1,38 @@
+extends layout
+
+block content
+
+  .card
+    .card-header
+      li.list-group-item
+        .row
+          .col 
+            span.text-rose.text-uppercase
+              b Дата
+          .col 
+            span.text-uppercase #{h.formatDate(inspection.date)}
+    .card-body 
+      .carousel.slide(id='galleryCarousel' data-ride='carousel')
+        ol.carousel-indicators
+          each galleryPhoto, index in inspection.gallery
+            li(data-target='#galleryCarousel' data-slide-to=index class=`${index==0?'active':''}`)
+        .carousel-inner
+          each galleryPhoto, index in inspection.gallery
+            .carousel-item(class=`${index==0?'active':''}`)
+              img.d-block.w-100(src=`/uploads/${galleryPhoto}`)
+        .carousel-control-prev(href='#galleryCarousel' role='button' data-slide='prev')
+          span.carousel-control-prev-icon.text-rose(aria-hidden='true')
+          span.sr-only Назад
+        .carousel-control-next(href='#galleryCarousel' role='button' data-slide='next')
+          span.carousel-control-next-icon(aria-hidden='true')
+          span.sr-only Вперед
+    //- .card-body 
+    //-   ul.list-group.list-group-flush
+    //-     each file in inspection.files
+    //-       li.list-group-item
+    //-         a.text-uppercase(href=`/uploads/${file.path}`) #{file.name}
+
+
+
+
+

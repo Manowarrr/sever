@@ -59,10 +59,6 @@ html
                   li.nav-item
                     a.nav-link.btn.btn-round.btn-white(href=`/add${buttonTitle==='объект'?'Building':'Tenant'}`) Добавить #{buttonTitle}
                 li.nav-item
-                  a.nav-link(href='#')
-                    i.material-icons notifications
-                    span.notification 5
-                li.nav-item
                   a.nav-link(href='/logout')
                     i.material-icons exit_to_app
     
@@ -79,8 +75,7 @@ html
             block content
 
         .footer   
-          .container-fluid
-            .copyright.float-right &copy;&nbsp;2019            
+          .container-fluid           
 
 
     block scripts

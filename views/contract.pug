@@ -1,5 +1,7 @@
 extends layout
 
+include mixins/_inspectionCard
+
 block content
   ul.nav.nav-pills.nav-pills-rose.nav-pills-icons.justify-content-center(role='tablist')
     each menuItem in h.contractMenu
@@ -110,6 +112,13 @@ block content
             .form-row
               .col-sm-10
                 button.btn.btn-rose(type='submit') Загрузить
+        .card-body 
+          ul.list-group.list-group-flush
+            each file in contract.files
+              li.list-group-item
+                a.text-uppercase(href=`/uploads/${file.path}`) #{file.name}
+                a.btn.btn-danger.btn-link(href=`/contracts/${contract._id}/${file.path}/deleteFile`)
+                  i.material-icons close 
       .card
         .card-header
           form(action=`/addContractClaims/${contract._id}` method='POST' enctype='multipart/form-data')
@@ -124,13 +133,13 @@ block content
             .form-row
               .col-sm-10
                 button.btn.btn-rose(type='submit') Загрузить
-      .card
-        .card-header Претензии
         .card-body 
           ul.list-group.list-group-flush
             each claim in contract.claims
               li.list-group-item
                 a.text-uppercase(href=`/uploads/${claim.path}`) #{claim.name}
+                a.btn.btn-danger.btn-link(href=`/contracts/${contract._id}/${claim.path}/deleteClaim`)
+                  i.material-icons close 
       .card
         .card-header 
           form
@@ -151,7 +160,7 @@ block content
         .col.text-center.py-2
           a.btn.btn-rose(href=`/addInspection/${contract._id}` style='color:white') добавить осмотр
       .row
-        //- each inpection in contract.inspections
+        each inspection in contract.inspections
           .col-md-4
-            //- +inspectionCard(inspection)
+            +inspectionCard(inspection)
 

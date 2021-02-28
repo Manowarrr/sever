@@ -17,7 +17,7 @@ const inspectionSchema = new mongoose.Schema({
     required: 'You must supply a contract!'
   },
   gallery: [String],
-  files: 
+  mainfile: 
     {
       path: String,
       name: String
@@ -41,7 +41,6 @@ inspectionSchema.pre('save', async function(next) {
   if (inspectionsWithSlug.length) {
     this.slug = `${this.slug}-${inspectionsWithSlug.length + 1}`;
   }
-
   next();
 });
 
@@ -53,4 +52,4 @@ function autopopulate(next) {
 inspectionSchema.pre('find', autopopulate);
 inspectionSchema.pre('findOne', autopopulate);
 
-module.exports = mongoose.model('Inpection', inspectionSchema);
+module.exports = mongoose.model('Inspection', inspectionSchema);

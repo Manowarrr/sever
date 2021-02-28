@@ -12,6 +12,14 @@ mixin tenantForm(tenant = {})
         label(for='address') Адрес
         input.form-control(type='text' name='address' value=tenant.address)
     .form-row
+      .form-group.col
+        label(for='factaddress') Фактический адрес
+        input.form-control(type='text' name='factaddress' value=tenant.factaddress)
+    .form-row
+      .form-group.col
+        label(for='ogrn') ОГРН/ОГРНИП
+        input.form-control(type='text' name='ogrn' value=tenant.ogrn)
+    .form-row
       .form-group.col-md-6
         label(for='phone') Телефон
         input.form-control(type='phone' name='phone' value=tenant.phone)

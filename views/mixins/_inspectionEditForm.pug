@@ -1,0 +1,13 @@
+mixin inspectionEditForm(inspection = {})
+  form.bg-white.px-3.py-3.mb-5(action=`/updateGallery/${inspection._id}` method='POST' enctype='multipart/form-data')
+    .form-row
+      .form-group.col.form-file-upload.form-file-multiple
+        input.inputFileHidden(type='file' multiple='' name='gallery' id='gallery' accept='image/*')
+        .input-group
+          input.form-control.inputFileVisible(type='text' placeholder='Загрузите фотографии для фотогалереи')
+          span.input-group-btn
+            button.btn.btn-fab.btn-round.btn-warning(type='button')
+              i.material-icons layers
+    .form-group.row
+      .col-sm-10
+        button.btn.btn-rose(type='submit') Сохранить

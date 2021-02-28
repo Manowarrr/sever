@@ -14,6 +14,8 @@ const tenantSchema = new mongoose.Schema({
     type: String,
     required: 'Введите адрес'
   },
+  factaddress: String,
+  ogrn: String,
   inn: Number,
   phone: Number,
   email: String,

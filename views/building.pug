@@ -94,6 +94,13 @@ block content
               .row
                 .col 
                   span.text-rose.text-uppercase
+                    b Управляющая компания
+                .col 
+                  span.text-uppercase #{building.uk}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
                     b Договоры
                 .col 
                   each contract in building.contracts
@@ -155,9 +162,11 @@ block content
                 button.btn.btn-rose(type='submit') Загрузить
         .card-body 
           ul.list-group.list-group-flush
-            each file in building.files
+            each file, index in building.files
               li.list-group-item
                 a.text-uppercase(href=`/uploads/${file.path}`) #{file.name}
+                a.btn.btn-danger.btn-link(href=`/buildings/${building._id}/${file.path}/deleteFile`)
+                  i.material-icons close 
     .tab-pane(id='link4')
       .row.bg-white
         .col.text-center.py-2

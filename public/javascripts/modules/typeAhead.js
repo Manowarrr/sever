@@ -9,8 +9,7 @@ function searchResultsHTML(results) {
       result.link = 'tenants';
     }
   });
-  console.dir(results);
-  console.dir(results);
+
   return results.map(result => {
     return `
       <a href="/${result.link}/${result.slug}" class="sever-search__link p-2">

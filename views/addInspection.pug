@@ -13,20 +13,12 @@ block content
         input.form-control.datepicker(type='text' name='date')
     .form-row
       .form-group.col.form-file-upload.form-file-multiple
-        input.inputFileHidden(type='file' multiple='' name='gallery' id='gallery' accept='image/*')
+        input.inputFileHidden(type='file' name='mainfile' id='mainfile' required)
         .input-group
-          input.form-control.inputFileVisible(type='text' placeholder='Загрузите фотографии для фотогалереи')
+          input.form-control.inputFileVisible(type='text' placeholder='Загрузите документ')
           span.input-group-btn
             button.btn.btn-fab.btn-round.btn-warning(type='button')
               i.material-icons layers
-    //- .form-row
-    //-   .form-group.col.form-file-upload.form-file-multiple
-    //-     input.inputFileHidden(type='file' multiple='' name='files' id='files')
-    //-     .input-group
-    //-       input.form-control.inputFileVisible(type='text' placeholder='Загрузите документ')
-    //-       span.input-group-btn
-    //-         button.btn.btn-fab.btn-round.btn-warning(type='button')
-    //-           i.material-icons layers
     .form-row
       .form-group.col-md-6
         input.form-control(type='hidden' name='contract' value=contract._id)

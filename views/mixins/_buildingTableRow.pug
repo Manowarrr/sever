@@ -5,12 +5,14 @@ mixin buildingTableRow(building={})
         img(src=`/uploads/${building.mainphoto || 'building.jpg'}`)
     td.text-center.td-name
       a(href=`/buildings/${building.slug}` style='color:#E81E63') #{building.name}
-    td.text-center #{building.purpose}
     td.td-number.text-center #{building.place}
     td.td-number.text-center #{building.price}
-    //- td.td-number.text-center #{building.occupiedPercent}
-    td.text-center #{building.floors}
-    td.text-center #{building.cadastr}
+    td.text-center #{building.purpose}
+    td.text-center
+      each contract in building.contracts
+        a.text-uppercase(href=`/contracts/${contract.slug}` style='color:#E81E63') #{contract.name}
+        br
+    td.td-number.text-center #{Math.round(building.occupiedPercent)}
     td.td-actions.text-center
       a.btn.btn-success.btn-link(href=`/buildings/${building._id}/edit`)
         i.material-icons edit

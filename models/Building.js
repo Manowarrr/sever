@@ -20,8 +20,7 @@ const buildingSchema = new mongoose.Schema({
   price: Number,
   floors: String,
   cadastr: String,
-  // tenantNumber: Number,
-  // contractNumber: Number,
+  uk: String,
   mainphoto: String,
   gallery: [String],
   files: [

@@ -28,7 +28,16 @@ exports.siteName = `Север`;
 
 exports.formatDate = function(date) {
   let startDate = new Date(date);
-  return (startDate.getMonth() + 1) + '.' + startDate.getDate() + '.' +  startDate.getFullYear()
+  let dd = startDate.getDate();
+  if (dd < 10) dd = '0' + dd;
+
+  var mm = startDate.getMonth() + 1;
+  if (mm < 10) mm = '0' + mm;
+
+  var yy = startDate.getFullYear() % 100;
+  if (yy < 10) yy = '0' + yy;
+
+  return dd + '.' + mm + '.' + yy;
 }
 
 exports.menu = [

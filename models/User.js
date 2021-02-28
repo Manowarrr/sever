@@ -20,8 +20,8 @@ const userSchema = new Schema({
     required: 'Введите имя',
     trim: true
   },
-  phone: String,
-  photo: String
+  phone: String
+  //photo: String
 });
 
 // userSchema.virtual('gravatar').get(function() {

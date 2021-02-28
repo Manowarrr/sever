@@ -1,9 +1,48 @@
 const mongoose = require('mongoose');
 const Tenant = mongoose.model('Tenant');
+const xlsxj = require("xlsx-to-json-lc");
+const multer = require('multer');
+const fs = require('fs')
+
+const multerOptions = {
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/uploads');
+    },
+    filename: function (req, file, cb) {
+      let fileName = `debt.xlsx`;
+      
+      cb(null, fileName);
+    }
+  })
+}
 
 exports.getTenants = async (req, res) => {
   const tenants = await Tenant.find();
   res.render('tenants', { mainTitle: 'Арендаторы', tenants, buttonTitle: 'арендатора' });
+}
+
+//Debt
+exports.getDebt = async (req, res) => {
+  res.render('debt');
+}
+
+exports.uploadDebtFile = multer(multerOptions).single('debts');
+
+exports.countDebt = async (req, res) => {
+
+    xlsxj({
+      input: "./public/uploads/debt.xlsx", 
+      output: null,
+      lowerCaseHeaders:true 
+    }, function(err, result) {
+      if(err) {
+        console.error(err);
+      }else {
+        fs.unlinkSync("./public/uploads/debt.xlsx");
+        res.json({data: result})
+      }
+    });
 }
 
 exports.deleteTenant = async (req, res) => {

@@ -5,6 +5,10 @@ const Contract = mongoose.model('Contract');
 const multer = require('multer');
 const jimp = require('jimp');
 const uuid = require('uuid');
+const fs = require('fs');
+const { promisify } = require('util');
+
+const unlinkAsync = promisify(fs.unlink);
 
 const multerOptions = {
   storage: multer.diskStorage({
@@ -17,6 +21,13 @@ const multerOptions = {
       cb(null, fileName);
     }
   })
+}
+
+exports.deleteBuildingFile = async (req, res) => {
+  const building = await Building.findOneAndUpdate({ _id: req.params.id }, { $pull: { files: { path: req.params.path} } });
+  await unlinkAsync('./public/uploads/' + req.params.path);
+  req.flash('success', `Файл успешно удален`);
+  res.redirect(`/buildings/${building.slug}`);
 }
 
 exports.addBuilding = (req, res) => {
@@ -57,6 +68,8 @@ exports.deleteBuilding = async (req, res) => {
     });
   if(Object.keys(building.contracts).length === 0) {
     await Building.deleteOne({ _id: req.params.id });
+    await building.gallery.forEach(item => unlinkAsync('./public/uploads/' + item));
+    await building.files.forEach(item => unlinkAsync('./public/uploads/' + item.path));
     req.flash('success', `Объект удален.`);
     res.redirect(`/buildings/`);
   } else {
@@ -116,7 +129,7 @@ exports.getBuildingBySlug = async (req, res, next) => {
                        building.contracts.reduce((sum, current) => sum - current.space, building.place) : 0;
   building.occupiedSpace = building.place - building.freeSpace;
   building.occupiedPercent = building.occupiedSpace/building.place * 100;
-console.dir(building.contracts);
+
   if(!building) return next();
 
 
@@ -171,11 +184,25 @@ exports.getBuildingsByDistrict = async (req, res) => {
   }
 
   const districtPromise = Building.getDistrictList();
-  const buildingsPromise = Building.find({ district: districtQuery, isSelled: isSelled });
+  const buildingsPromise = Building.find(
+      { district: districtQuery, isSelled: isSelled }
+    )
+    .populate({
+      path: 'contracts',
+      populate: { path: 'building' }       
+    });
   const selledBuildingsPromise = Building.find({ isSelled: true });
   const [districts, buildings, selledBuildings] = await Promise.all([districtPromise, buildingsPromise, selledBuildingsPromise]);
   districts.push({ _id: 'Все', count: districts.reduce((sum, current) => sum + current.count, 0)});
   districts.push({ _id: 'Проданные', count: selledBuildings.length});
+
+  buildings.forEach(function(item, i, arr) {
+    item.freeSpace = item.contracts ? 
+                        item.contracts.reduce((sum, current) => sum - current.space, item.place) : 0;
+    item.occupiedSpace = item.place - item.freeSpace;
+    item.occupiedPercent = item.occupiedSpace/item.place * 100; 
+  });
+
 
   res.render('buildings', { mainTitle: 'Объекты', districts, buildings, district, buttonTitle: 'объект'});
 };
