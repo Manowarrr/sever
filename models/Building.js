@@ -21,6 +21,7 @@ const buildingSchema = new mongoose.Schema({
   floors: String,
   cadastr: String,
   uk: String,
+  communal: String,
   mainphoto: String,
   gallery: [String],
   files: [

@@ -6,6 +6,10 @@ mixin contractEditForm(contract, tenants)
         input.form-control(type='text' name='name' value=contract.name)
     .form-row
       .form-group.col
+        label(for='debt') Долг
+        input.form-control(type='text' name='debt' value=contract.debt)
+    .form-row
+      .form-group.col
         label.d-block(for='tenant') Арендатор
         select.btn.btn-rose(name='tenant')
           each tenant in tenants
@@ -19,7 +23,7 @@ mixin contractEditForm(contract, tenants)
         input.form-control(type='number' step='any' name='space' value=contract.space)
       .form-group.col-md-6
         label(for='price') Цена
-        input.form-control(type='text' name='price' value=contract.price)
+        input.form-control(type='number' step='any' name='price' value=contract.price)
     .form-group.row
         label(for='roomNumber') Номера помещение
         input.form-control(type='text' name='roomNumber' value=contract.roomNumber)

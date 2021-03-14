@@ -75,7 +75,7 @@ block content
                   span.text-rose.text-uppercase
                     b Цена
                 .col 
-                  span.text-uppercase #{building.price} р.
+                  span.text-uppercase #{h.formatPrice(building.price)} 
             li.list-group-item
               .row
                 .col 
@@ -97,6 +97,13 @@ block content
                     b Управляющая компания
                 .col 
                   span.text-uppercase #{building.uk}
+            li.list-group-item
+              .row
+                .col 
+                  span.text-rose.text-uppercase
+                    b Коммунальные договоры
+                .col 
+                  span.text-uppercase #{building.communal}
             li.list-group-item
               .row
                 .col 

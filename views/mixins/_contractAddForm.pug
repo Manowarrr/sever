@@ -28,13 +28,15 @@ mixin contractAddForm()
         input.form-control(type='number'  step='any' name='space')
       .form-group.col-md-6
         label(for='price') Цена
-        input.form-control(type='text' name='price')
+        input.form-control(type='number' step='any' name='price')
     if building
       .form-row
-        .form-group.col-md-6
+        .form-group.col-md-4
           input.form-control(type='hidden' name='building' value=building._id)
-        .form-group.col-md-6
+        .form-group.col-md-4
           input.form-control(type='hidden' name='buildingSlug' value=building.slug)
+        .form-group.col-md-4
+          input.form-control(type='hidden' name='district' value=building.district)
     .form-group.row
       .col-sm-10
         button.btn.btn-rose(type='submit') Сохранить

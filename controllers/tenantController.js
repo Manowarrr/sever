@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Tenant = mongoose.model('Tenant');
+const Contract = mongoose.model('Contract');
 const xlsxj = require("xlsx-to-json-lc");
 const multer = require('multer');
 const fs = require('fs')
@@ -18,13 +19,16 @@ const multerOptions = {
 }
 
 exports.getTenants = async (req, res) => {
-  const tenants = await Tenant.find();
+  //const tenants = await Tenant.find();
+  const tenants = await Tenant.getTenants();
+  //res.json(tenants);
   res.render('tenants', { mainTitle: 'Арендаторы', tenants, buttonTitle: 'арендатора' });
 }
 
 //Debt
-exports.getDebt = async (req, res) => {
-  res.render('debt');
+exports.getDebts = async (req, res) => {
+  const contracts = await Contract.find({debt : {$ne: 0}});
+  res.render('debts', { mainTitle: 'Долги', contracts });
 }
 
 exports.uploadDebtFile = multer(multerOptions).single('debts');

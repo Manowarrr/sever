@@ -22,10 +22,13 @@ html
             if user
               li.nav-item
                 a.nav-link(href='/buildings') Панель управления
-            //- li.nav-item
-            //-   a.nav-link(href='/login') Войти
-            //- li.nav-item
-            //-   a.nav-link(href='/register') Регистрация
+              li.nav-item
+                a.nav-link(href='/changepassword') Изменить пароль
+            else
+              li.nav-item
+                a.nav-link(href='/login') Войти
+              //- li.nav-item
+              //-   a.nav-link(href='/register') Регистрация
     .wrapper.wrapper-full-page
       .page-header.register-page.header-filter(filter-color='black' style='background-image:url("/uploads/register.jpg")')
         .container

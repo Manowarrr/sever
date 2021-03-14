@@ -4,16 +4,19 @@ include mixins/_contractTableRow
 
 block content
   .row
-    form.ml-auto.mr-auto(action=`/getContractsByDate` method='POST')
-      .form-row
-        .form-group.col-md-4
-          label(for='startDate') Начало периода
-          input.form-control.datepicker(type='text' name='startDate')
-        .form-group.col-md-4
-          label(for='finishDate') Конец периода
-          input.form-control.datepicker(type='text' name='finishDate')
-        .col-md-4
-          button.btn.btn-rose(type='submit') Поиск по дате
+    .col-md-9
+      form.ml-auto.mr-auto(action=`/getContractsByDate` method='POST')
+        .form-row
+          .form-group.col-md-3
+            label(for='startDate') Начало периода
+            input.form-control.datepicker(type='text' name='startDate')
+          .form-group.col-md-3
+            label(for='finishDate') Конец периода
+            input.form-control.datepicker(type='text' name='finishDate')
+          .col-md-3
+            button.btn.btn-rose(type='submit') Поиск по дате
+    .col-md-3.text-right
+      a.btn.btn-rose(href='/getExpiredContracts') Расторгнутые
   .row
     .col-md-12
       .card
@@ -29,24 +32,24 @@ block content
                   th.disabled-sorting.text-center Название
                   th.text-center Цена
                   th.text-center Площадь
+                  th.text-center Район
+                  th.text-center Этаж
                   th.disabled-sorting.text-center Арендатор
                   th.disabled-sorting.text-center Объект
-                  th.disabled-sorting.text-center Район
                   th.disabled-sorting.text-center Дата начала
                   th.disabled-sorting.text-center Дата окончания
-                  th.disabled-sorting.text-center Файл
                   th.disabled-sorting.text-center 
               tfoot
                 tr
                   th.disabled-sorting.text-center Название
                   th.text-center Цена
                   th.text-center Площадь
+                  th.text-center Район
+                  th.text-center Этаж
                   th.disabled-sorting.text-center Арендатор
                   th.disabled-sorting.text-center Объект
-                  th.disabled-sorting.text-center Район
                   th.disabled-sorting.text-center Дата начала
                   th.disabled-sorting.text-center Дата окончания
-                  th.disabled-sorting.text-center Файл
                   th.text-center  
               tbody
                 each contract in contracts

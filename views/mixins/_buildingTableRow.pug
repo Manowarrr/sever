@@ -6,7 +6,7 @@ mixin buildingTableRow(building={})
     td.text-center.td-name
       a(href=`/buildings/${building.slug}` style='color:#E81E63') #{building.name}
     td.td-number.text-center #{building.place}
-    td.td-number.text-center #{building.price}
+    td.td-number.text-center #{h.formatPrice(building.price)}
     td.text-center #{building.purpose}
     td.text-center
       each contract in building.contracts

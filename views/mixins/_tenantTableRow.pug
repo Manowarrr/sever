@@ -7,6 +7,7 @@ mixin tenantTableRow(tenant={})
     td.td-number.text-center #{tenant.phone}
     td.text-center #{tenant.email}
     td.text-center  #{tenant.person[0].position} #{tenant.person[0].name}
+    td.text-center  #{(tenant.contracts.length !== 0) ? tenant.contracts[0].district : 'н/д'}
     td.td-actions.text-center
       a.btn.btn-success.btn-link(href=`/tenants/${tenant._id}/edit`)
         i.material-icons edit

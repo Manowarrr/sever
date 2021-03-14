@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h2.text-center.mb-2 #{title}
+  form.bg-white.px-3.py-3.mb-5(action=`/addClaim` method='POST')
+    .form-row
+      .form-group.col
+        label(for='name') Название
+        input.form-control(type='text' name='name')
+    .form-row
+      .form-group.col
+        label(for='description') Описание
+        textarea.form-control(type='text' name='description')
+    .form-row
+      .form-group.col-md-6
+        input.form-control(type='hidden' name='contract' value=contract._id)
+    .form-group.row
+      .col-sm-10
+        button.btn.btn-rose(type='submit') Сохранить

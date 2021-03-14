@@ -12,8 +12,8 @@ const userSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    //validate: [validator.isEmail, 'Неверный адрес'],
-    required: 'Введите правильный адрес'
+    validate: [validator.isEmail, 'Неправильный email'],
+    required: 'Введите email'
   },
   name: {
     type: String,
@@ -21,15 +21,15 @@ const userSchema = new Schema({
     trim: true
   },
   phone: String
-  //photo: String
 });
 
-// userSchema.virtual('gravatar').get(function() {
-//   const hash = md5(this.email);
-//   return `https://gravatar.com/avatar/${hash}?s=200`;
-// });
+userSchema.virtual('tasks', {
+  ref: 'Task', // what model to link?
+  localField: '_id', // which field on the store?
+  foreignField: 'user' // which field on the review?
+});
 
-userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
+userSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
 userSchema.plugin(mongodbErrorHandler);
 
 module.exports = mongoose.model('User', userSchema);

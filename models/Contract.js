@@ -15,6 +15,8 @@ const contractSchema = new mongoose.Schema({
   space: Number,
   price: Number,
   roomNumber: String,
+  district: String,
+  debt: Number,
   building: {
     type: mongoose.Schema.ObjectId,
     ref: 'Building',
@@ -32,6 +34,18 @@ const contractSchema = new mongoose.Schema({
     }
   ],
   claims: [
+    {
+      path: String,
+      name: String
+    }
+  ],
+  ds: [
+    {
+      path: String,
+      name: String
+    }
+  ],
+  acts: [
     {
       path: String,
       name: String
@@ -71,6 +85,12 @@ contractSchema.pre('findOne', autopopulate);
 
 contractSchema.virtual('inspections', {
   ref: 'Inspection', // what model to link?
+  localField: '_id', // which field on the store?
+  foreignField: 'contract' // which field on the review?
+});
+
+contractSchema.virtual('cclaims', {
+  ref: 'Claim', // what model to link?
   localField: '_id', // which field on the store?
   foreignField: 'contract' // which field on the review?
 });

@@ -21,6 +21,10 @@ mixin buildingForm(building = {})
         input.form-control(type='text' id='uk' name='uk' value=(building.uk))
     .form-row
       .form-group.col
+        label(for='description') Коммунальные договоры
+        textarea.form-control(name='communal')= building.communal
+    .form-row
+      .form-group.col
         label(for='lng') Долгота
         input.form-control(type='text' id='lng' name='location[coordinates][0]' required value=(building.location && building.location.coordinates[0]))
     .form-row

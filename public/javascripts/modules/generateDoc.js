@@ -2,7 +2,7 @@
         JSZipUtils.getBinaryContent(url,callback);
     }
     function generate() {
-        loadFile("/dist/Претензия ИП Голяк31.01.2019 задолженность.docx",function(error,content){
+        loadFile("/dist/claim.docx",function(error,content){
             if (error) { throw error };
             var zip = new JSZip(content);
             var doc=new window.docxtemplater().loadZip(zip)
@@ -31,3 +31,5 @@
             saveAs(out,"output.docx")
         })
     }
+
+

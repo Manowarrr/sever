@@ -1,0 +1,47 @@
+extends layout
+
+include mixins/_contractTableRow
+
+block content
+  .row
+    .col-md-12
+      .card
+        .card-header.card-header-rose.card-header-icon
+          .card-icon
+            i.material-icons assignment
+          h4.card-title Список договоров
+        .card-body
+          .material-datatables
+            table.table.table-shopping.table-no-bordered.table-hover(id='contractTable' width='100%' cellspacing='0' style='width:100%')
+              thead
+                tr
+                  th.disabled-sorting.text-center Название
+                  th.text-center Район
+                  th.disabled-sorting.text-center Арендатор
+                  th.disabled-sorting.text-center Телефон
+                  th.disabled-sorting.text-center Сумма долга
+                  th.disabled-sorting.text-center Сформировать претензию
+              tbody
+                each contract in contracts
+                    tr
+                      td.text-center.td-name
+                        a(href=`/contracts/${contract.slug}` style='color:#E81E63') #{contract.name}
+                      td.text-center #{contract.building.district} 
+                      td.text-center
+                        a(href=`/tenants/${contract.tenant.slug}` style='color:#E81E63') #{contract.tenant.name}
+                      td.text-center #{contract.tenant.phone} 
+                      td.td-number.text-center #{h.formatPrice(contract.debt)} 
+                      td.td-actions.text-center
+                        form
+                          .form-row
+                            .form-group.col
+                              button.btn.btn-rose(type='submit', onclick=onclick="generate()") Сформировать
+                              input.form-control(type='hidden' id='money' value=contract.debt placeholder='Введите сумму')
+                          .form-row
+                            input.form-control(type='hidden' id='tenantName' value=contract.tenant.name)
+                            input.form-control(type='hidden' id='tenantAddress' value=contract.tenant.address)
+                            input.form-control(type='hidden' id='buildingAddress' value=contract.building.address)
+                            input.form-control(type='hidden' id='roomNumber' value=contract.roomNumber)
+                            input.form-control(type='hidden' id='space' value=contract.space)
+                            input.form-control(type='hidden' id='contractName' value=contract.name)
+                            input.form-control(type='hidden' id='startDate' value=`${h.formatDate(contract.startDate)}`)

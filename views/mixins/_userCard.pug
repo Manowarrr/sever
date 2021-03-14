@@ -27,4 +27,5 @@ mixin userCard(user={})
                   b Телефон
               .col 
                 span.text-uppercase #{user.phone}
-        button.btn.btn-rose.pull-right Добавить задачи
+        a.btn.btn-rose(href=`/addTask/${user._id}` style='color:white') Задачи
+        

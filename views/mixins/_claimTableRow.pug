@@ -1,0 +1,17 @@
+mixin claimTableRow(claim={})
+  tr
+    td.text-left.td-name #{claim.name}
+    td.text-left.td-name #{claim.description}
+    td.text-center
+      a(href=`/contracts/${claim.contract.slug}` style='color:#E81E63') #{claim.contract.name}
+    td.td-number.text-center #{h.formatPrice(claim.contract.debt)}
+    td.text-center 
+      each cclaim in claim.contract.claims
+        a.text-uppercase(href=`/uploads/${cclaim.path}`) #{cclaim.name}
+        br
+    td.td-actions.text-center
+      a.btn.btn-success.btn-link(href=`/claims/${claim._id}/edit`)
+        i.material-icons edit
+      a.btn.btn-danger.btn-link(href=`/claims/${claim._id}/delete`)
+        i.material-icons close
+

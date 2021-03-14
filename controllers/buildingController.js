@@ -179,6 +179,8 @@ exports.getBuildingsByDistrict = async (req, res) => {
   } else if(district ==  'Проданные') {
     districtQuery = { $exists: true };
     isSelled = true;
+  } else if(district ==  'Пустующие') {
+    districtQuery = { $exists: true };
   } else {
     districtQuery = district;
   }
@@ -192,9 +194,15 @@ exports.getBuildingsByDistrict = async (req, res) => {
       populate: { path: 'building' }       
     });
   const selledBuildingsPromise = Building.find({ isSelled: true });
-  const [districts, buildings, selledBuildings] = await Promise.all([districtPromise, buildingsPromise, selledBuildingsPromise]);
+  let [districts, buildings, selledBuildings] = await Promise.all([districtPromise, buildingsPromise, selledBuildingsPromise]);
+  if(district === 'Пустующие') {
+    buildings = buildings.filter(function(building) {
+      return building.contracts.length === 0;
+    });
+  }
   districts.push({ _id: 'Все', count: districts.reduce((sum, current) => sum + current.count, 0)});
   districts.push({ _id: 'Проданные', count: selledBuildings.length});
+  districts.push({ _id: 'Пустующие', count: buildings.length});
 
   buildings.forEach(function(item, i, arr) {
     item.freeSpace = item.contracts ? 
@@ -202,7 +210,6 @@ exports.getBuildingsByDistrict = async (req, res) => {
     item.occupiedSpace = item.place - item.freeSpace;
     item.occupiedPercent = item.occupiedSpace/item.place * 100; 
   });
-
 
   res.render('buildings', { mainTitle: 'Объекты', districts, buildings, district, buttonTitle: 'объект'});
 };

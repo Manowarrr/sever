@@ -40,10 +40,18 @@ exports.formatDate = function(date) {
   return dd + '.' + mm + '.' + yy;
 }
 
+exports.formatPrice = function(price) {
+  let formattedPrice = price.toFixed(2).split('.');
+  console.log(formattedPrice);
+  return `${formattedPrice[0]} р. ${formattedPrice[1]} к.`
+}
+
 exports.menu = [
   { slug: '/buildings', title: 'Объекты' },
   { slug: '/tenants', title: 'Арендаторы' },
   { slug: '/contracts', title: 'Договоры' },
+  { slug: '/debts', title: 'Задолженность' },
+  { slug: '/claims', title: 'Иски' },
   { slug: '/inspections', title: 'Осмотры' },
   { slug: '/users', title: 'Сотрудники' },
   { slug: '/stats', title: 'Статистика' },
@@ -90,6 +98,10 @@ exports.contractMenu = [
   { 
     name: 'Осмотры',
     link: '#link3' 
+  },
+  { 
+    name: 'Иски',
+    link: '#link4' 
   }
 ];
 

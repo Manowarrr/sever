@@ -6,22 +6,34 @@ const authController = require('../controllers/authController');
 const tenantController = require('../controllers/tenantController');
 const contractController = require('../controllers/contractController');
 const inspectionController = require('../controllers/inspectionController');
+const claimController = require('../controllers/claimController');
 
 const { catchErrors } = require('../handlers/errorHandlers');
 
-// Main page, login/register forms
+// // Main page, login/register forms
 router.get('/', userController.loginForm);
 router.get('/register', userController.registerForm);
 router.get('/login', userController.loginForm);
-router.get('/logout', authController.logout);
+// router.get('/logout', authController.logout);
 
 router.post('/register', 
-  //userController.validateRegister,
+  userController.validateRegister,
   userController.register,
   authController.login
 );
 
 router.post('/login', authController.login);
+router.get('/logout', authController.logout);
+router.get('/changepassword', userController.changePassword);
+router.post('/changepassword',   
+  authController.confirmedPasswords, 
+  authController.update
+);
+// router.get('/account/reset/:token', authController.reset);
+// router.post('/account/reset/:token', 
+//   authController.confirmedPasswords, 
+//   authController.update
+// );
 
 // Users
 router.get('/users', 
@@ -29,6 +41,26 @@ router.get('/users',
   catchErrors(userController.getUsers)
 );
 
+router.get('/account',
+  authController.isLoggedIn,
+  userController.account  
+);
+router.get('/addTask/:id',
+  authController.isLoggedIn,
+  userController.getTasks  
+);
+router.get('/tasks/:id/delete',
+  authController.isLoggedIn,
+  userController.deleteTask  
+);
+router.post('/addTask/:id',
+  authController.isLoggedIn,
+  userController.addTask  
+);
+
+router.post('/account',
+  catchErrors(userController.updateAccount)  
+);
 // Inspections
 router.get('/inspections', 
   authController.isLoggedIn,
@@ -66,6 +98,34 @@ router.get('/inspections/:slug',
 router.get('/inspections/:id/delete', 
   authController.isLoggedIn,
   catchErrors(inspectionController.deleteInspection)
+);
+// Claims
+router.get('/claims', 
+  authController.isLoggedIn,
+  catchErrors(claimController.getClaims)
+);
+router.get('/addClaim/:id', 
+  authController.isLoggedIn,
+  catchErrors(claimController.addClaim)
+);
+router.post('/addClaim',
+  authController.isLoggedIn, 
+  catchErrors(claimController.createClaim)
+);
+router.get('/claims/:slug', 
+  authController.isLoggedIn,
+  catchErrors(claimController.getClaimBySlug)
+);
+router.get('/claims/:id/edit', 
+  authController.isLoggedIn,
+  catchErrors(claimController.editClaim)
+);
+router.post('/updateClaim/:id',
+  catchErrors(claimController.updateClaim)
+);
+router.get('/claims/:id/delete', 
+  authController.isLoggedIn,
+  catchErrors(claimController.deleteClaim)
 );
 // Buildings
 router.get('/buildings', 
@@ -114,9 +174,9 @@ router.get('/buildings/:id/:path/deleteFile',
 );
 
 // DEBT
-router.get('/debt', 
+router.get('/debts', 
   authController.isLoggedIn,
-  catchErrors(tenantController.getDebt)
+  catchErrors(tenantController.getDebts)
 );
 router.post('/countDebt', 
   tenantController.uploadDebtFile,
@@ -160,6 +220,10 @@ router.post('/getContractsByDate',
   authController.isLoggedIn,
   catchErrors(contractController.getContractsByDate)
 );
+router.get('/getExpiredContracts', 
+  authController.isLoggedIn,
+  catchErrors(contractController.getExpiredContracts)
+);
 router.get('/addContract/:id', 
   authController.isLoggedIn,
   catchErrors(contractController.addContract)
@@ -190,6 +254,14 @@ router.post('/addContractClaims/:id',
   contractController.uploadClaims, 
   catchErrors(contractController.updateClaims)
 );
+router.post('/addContractDs/:id', 
+  contractController.uploadDs, 
+  catchErrors(contractController.updateDs)
+);
+router.post('/addContractActs/:id', 
+  contractController.uploadActs, 
+  catchErrors(contractController.updateActs)
+);
 router.get('/contracts/:id/:path/deleteFile', 
   authController.isLoggedIn,
   catchErrors(contractController.deleteContractFile)
@@ -198,14 +270,15 @@ router.get('/contracts/:id/:path/deleteClaim',
   authController.isLoggedIn,
   catchErrors(contractController.deleteContractClaim)
 );
-// user account
-router.get('/account',
+router.get('/contracts/:id/:path/deleteDs', 
   authController.isLoggedIn,
-  userController.account  
+  catchErrors(contractController.deleteContractDs)
 );
-router.post('/account',
-  catchErrors(userController.updateAccount)  
+router.get('/contracts/:id/:path/deleteAct', 
+  authController.isLoggedIn,
+  catchErrors(contractController.deleteContractAct)
 );
+
 
 // map
 router.get('/map', catchErrors(buildingController.getBuildings));

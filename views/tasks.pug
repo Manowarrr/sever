@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  .row
+    .col.md-2 
+    .col.md-8 
+      .card
+        .card-body 
+          form(action=`/addTask/${userData._id}` method='POST')
+            .form-row
+              .form-group.col
+                input.form-control(type='text'  name='name' placeholder='Введите новую задачу')
+                input.form-control(type='hidden' name='user' value=userData._id)
+                button.btn.btn-rose(type='submit') Добавить
+    .col.md-2
+  .row.text-center
+    .col.md-4
+    .col.md-4.center-block
+      .card
+        .card-body
+          table.table 
+            tbody 
+              each task in userData.tasks
+                tr 
+                  td 
+                    .form-check 
+                      label.form-check-label 
+                        input.form-check-input(type='checkbox')
+                        span.form-check-sign 
+                          span.check 
+                  td #{task.name}
+                  td.td-actions.text-center
+                    a.btn.btn-danger.btn-link(href=`/tasks/${task._id}/delete`)
+                      i.material-icons close
+    .col.md-4
+
+
+
+

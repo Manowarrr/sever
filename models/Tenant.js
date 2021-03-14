@@ -49,6 +49,12 @@ tenantSchema.pre('save', async function(next) {
   next();
 });
 
+tenantSchema.statics.getTenants = function() {
+  return this.aggregate([
+    { $lookup: { from: 'contracts', localField: '_id', foreignField: 'tenant', as: 'contracts' }}
+  ]);
+}
+
 tenantSchema.virtual('contracts', {
   ref: 'Contract', // what model to link?
   localField: '_id', // which field on the store?

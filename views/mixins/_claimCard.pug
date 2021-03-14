@@ -1,0 +1,16 @@
+mixin claimCard(claim={})  
+  .card
+    .card-header.card-header-icon.card-header-rose
+      .card-icon
+        i.material-icons store
+    .card-body
+      ul.list-group.list-group-flush
+        li.list-group-item
+          .row
+            .col 
+              span.text-rose.text-uppercase
+                b Название
+            .col 
+              span.text-uppercase #{claim.name}
+
+        

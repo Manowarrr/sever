@@ -26,9 +26,25 @@ const multerOptions = {
 
 exports.uploadFiles = multer(multerOptions).single('files');
 exports.uploadClaims = multer(multerOptions).single('claims');
+exports.uploadDs = multer(multerOptions).single('ds');
+exports.uploadActs = multer(multerOptions).single('acts');
 
 exports.deleteContractFile = async (req, res) => {
   const contract = await Contract.findOneAndUpdate({ _id: req.params.id }, { $pull: { files: { path: req.params.path} } });
+  await unlinkAsync('./public/uploads/' + req.params.path);
+  req.flash('success', `Файл успешно удален`);
+  res.redirect(`/contracts/${contract.slug}`);
+}
+
+exports.deleteContractDs = async (req, res) => {
+  const contract = await Contract.findOneAndUpdate({ _id: req.params.id }, { $pull: { ds: { path: req.params.path} } });
+  await unlinkAsync('./public/uploads/' + req.params.path);
+  req.flash('success', `Файл успешно удален`);
+  res.redirect(`/contracts/${contract.slug}`);
+}
+
+exports.deleteContractAct = async (req, res) => {
+  const contract = await Contract.findOneAndUpdate({ _id: req.params.id }, { $pull: { acts: { path: req.params.path} } });
   await unlinkAsync('./public/uploads/' + req.params.path);
   req.flash('success', `Файл успешно удален`);
   res.redirect(`/contracts/${contract.slug}`);
@@ -43,6 +59,22 @@ exports.deleteContractClaim = async (req, res) => {
 
 exports.updateFiles = async (req, res) => {
   const contract = await Contract.findOneAndUpdate({ _id: req.params.id }, { $push: { files: { path: req.file.filename, name: req.file.originalname } } }, {
+    new: true,
+    runValidators: true
+  }).exec();
+  req.flash('success', `Файлы успешно добавлены`);
+  res.redirect(`/contracts/${contract.slug}`);
+}
+exports.updateDs = async (req, res) => {
+  const contract = await Contract.findOneAndUpdate({ _id: req.params.id }, { $push: { ds: { path: req.file.filename, name: req.file.originalname } } }, {
+    new: true,
+    runValidators: true
+  }).exec();
+  req.flash('success', `Файлы успешно добавлены`);
+  res.redirect(`/contracts/${contract.slug}`);
+}
+exports.updateActs = async (req, res) => {
+  const contract = await Contract.findOneAndUpdate({ _id: req.params.id }, { $push: { acts: { path: req.file.filename, name: req.file.originalname } } }, {
     new: true,
     runValidators: true
   }).exec();
@@ -67,6 +99,7 @@ exports.addContract = async (req, res) => {
 }
 
 exports.createContract = async (req, res) => {
+  req.body.debt = 0;
   const contract = await (new Contract(req.body).save())
   req.flash('success', `договор добавлен.`);
   res.redirect(`/buildings/${req.body.buildingSlug}`);
@@ -94,6 +127,8 @@ exports.deleteContract = async (req, res) => {
   await Contract.deleteOne({ _id: req.params.id });
   await contract.files.forEach(item => unlinkAsync('./public/uploads/' + item.path));
   await contract.claims.forEach(item => unlinkAsync('./public/uploads/' + item.path));
+  await contract.ds.forEach(item => unlinkAsync('./public/uploads/' + item.path));
+  await contract.acts.forEach(item => unlinkAsync('./public/uploads/' + item.path));
 
   if(inspections) {
     await Inspection.deleteMany({contract: req.params.id});
@@ -129,6 +164,15 @@ exports.getContractsByDate = async (req, res) => {
   res.render('contracts', { mainTitle: 'Договоры', contracts });
 }
 
+exports.getExpiredContracts = async (req, res) => {
+  const contracts = await Contract.find(
+    {finishDate: {
+      $lte: Date.now()
+  } }
+  );
+  res.render('contracts', { mainTitle: 'Договоры', contracts });
+}
+
 
 
 exports.editContract = async (req, res) => {
@@ -154,14 +198,16 @@ exports.getContractBySlug = async (req, res, next) => {
     .populate({
       path: 'inspections',
       populate: { path: 'contract' }       
+    })
+    .populate({
+      path: 'cclaims',
+      populate: { path: 'contract' }       
     });
 
   if(!contract) return next();
 
   contract.priceMonth = contract.space * contract.price;
   contract.priceYear = contract.priceMonth * 12;
-  contract.ndsMonth = contract.priceMonth/120 * 20;
-  contract.ndsYear = contract.priceYear/120 * 20;
 
   res.render('contract', {contract, mainTitle: contract.name });    
 }

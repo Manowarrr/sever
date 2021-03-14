@@ -160,6 +160,21 @@ $('#inspectionTable').DataTable({
     'excel', 'pdf'
   ]
 });
+$('#claimTable').DataTable({
+  "pagingType": "full_numbers",
+  "lengthMenu": [
+    [10, 25, 50, -1],
+    [10, 25, 50, "All"]
+  ],
+  responsive: true,
+  language: {
+    url: "//cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json"
+  },
+  dom: 'Bfrtip',
+  buttons: [
+    'excel', 'pdf'
+  ]
+});
 
 $('.datepicker').datetimepicker({
   format: 'MM/DD/YYYY',

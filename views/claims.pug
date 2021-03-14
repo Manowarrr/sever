@@ -1,0 +1,26 @@
+extends layout
+
+include mixins/_claimTableRow
+
+block content
+  .row
+    .col-md-12
+      .card
+        .card-header.card-header-rose.card-header-icon
+          .card-icon
+            i.material-icons assignment
+          h4.card-title Список исков
+        .card-body
+          .material-datatables
+            table.table.table-shopping.table-no-bordered.table-hover(id='claimTable' width='100%' cellspacing='0' style='width:100%')
+              thead
+                tr
+                  th.disabled-sorting.text-left Название
+                  th.disabled-sorting.text-left Примечание
+                  th.text-center Договор
+                  th.text-center Долг
+                  th.disabled-sorting.text-center Претензии
+                  th.text-center 
+              tbody
+                each claim in claims
+                  +claimTableRow(claim)

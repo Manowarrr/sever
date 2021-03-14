@@ -2,18 +2,16 @@ mixin contractTableRow(contract={})
   tr
     td.text-center.td-name
       a(href=`/contracts/${contract.slug}` style='color:#E81E63') #{contract.name}
-    td.text-center.td-number #{contract.price} р.
+    td.text-center.td-number #{h.formatPrice(contract.price)} 
     td.td-number.text-center #{contract.space} м/кв
+    td.td-number.text-center #{contract.building.district} 
+    td.td-number.text-center #{contract.building.floors} 
     td.text-center
       a(href=`/tenants/${contract.tenant.slug}` style='color:#E81E63') #{contract.tenant.name}
     td.text-center.td-name 
       a(href=`/buildings/${contract.building.slug}` style='color:#E81E63') #{contract.building.name}
-    td.td-number.text-center #{contract.building.district} 
     td.text-center #{h.formatDate(contract.startDate)}
     td.text-center #{h.formatDate(contract.finishDate)}
-    td.text-center 
-      if contract.files[0]
-        a.text-uppercase(href=`/uploads/${contract.files[0].path}`) #{contract.files[0].name}
     td.td-actions.text-center
       a.btn.btn-success.btn-link(href=`/contracts/${contract._id}/edit`)
         i.material-icons edit

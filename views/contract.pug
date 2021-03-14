@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/_inspectionCard
+include mixins/_claimCard
 
 block content
   ul.nav.nav-pills.nav-pills-rose.nav-pills-icons.justify-content-center(role='tablist')
@@ -68,93 +69,178 @@ block content
                   span.text-rose.text-uppercase
                     b Цена
                 .col 
-                  span.text-uppercase #{contract.price} р/кв.м.
+                  span.text-uppercase #{h.formatPrice(contract.price)} за кв.м.
             li.list-group-item
               .row
                 .col 
                   span.text-rose.text-uppercase
-                    b Цена за месяц с НДС
+                    b Цена за месяц
                 .col 
-                  span.text-uppercase #{contract.priceMonth} р.
+                  span.text-uppercase #{h.formatPrice(contract.priceMonth)} 
             li.list-group-item
               .row
                 .col 
                   span.text-rose.text-uppercase
-                    b Цена за год с НДС
+                    b Цена за год
                 .col 
-                  span.text-uppercase #{contract.priceYear} р.
+                  span.text-uppercase #{h.formatPrice(contract.priceYear)} 
             li.list-group-item
               .row
                 .col 
                   span.text-rose.text-uppercase
-                    b НДС месяц
+                    b Доп. соглашения
                 .col 
-                  span.text-uppercase #{contract.ndsMonth} р.
+                  each ds in contract.ds
+                    a.text-uppercase(href=`/uploads/${ds.path}`) #{ds.name}
             li.list-group-item
               .row
                 .col 
                   span.text-rose.text-uppercase
-                    b НДС год
+                    b Акты
                 .col 
-                  span.text-uppercase #{contract.ndsYear} р.
+                  each act in contract.acts
+                    a.text-uppercase(href=`/uploads/${act.path}`) #{act.name}
     .tab-pane(id='link2')
-      .card
-        .card-header
-          form(action=`/addContractFiles/${contract._id}` method='POST' enctype='multipart/form-data')
-            .form-row
-              .form-group.col.form-file-upload.form-file-multiple
-                input.inputFileHidden(type='file' multiple='' name='files' id='files')
-                .input-group
-                  input.form-control.inputFileVisible(type='text' placeholder='Загрузите договор')
-                  span.input-group-btn
-                    button.btn.btn-fab.btn-round.btn-warning(type='button')
-                      i.material-icons layers
-            .form-row
-              .col-sm-10
-                button.btn.btn-rose(type='submit') Загрузить
-        .card-body 
-          ul.list-group.list-group-flush
-            each file in contract.files
-              li.list-group-item
-                a.text-uppercase(href=`/uploads/${file.path}`) #{file.name}
-                a.btn.btn-danger.btn-link(href=`/contracts/${contract._id}/${file.path}/deleteFile`)
-                  i.material-icons close 
-      .card
-        .card-header
-          form(action=`/addContractClaims/${contract._id}` method='POST' enctype='multipart/form-data')
-            .form-row
-              .form-group.col.form-file-upload.form-file-multiple
-                input.inputFileHidden(type='file' multiple='' name='claims' id='claims')
-                .input-group
-                  input.form-control.inputFileVisible(type='text' placeholder='Загрузите претензии')
-                  span.input-group-btn
-                    button.btn.btn-fab.btn-round.btn-warning(type='button')
-                      i.material-icons layers
-            .form-row
-              .col-sm-10
-                button.btn.btn-rose(type='submit') Загрузить
-        .card-body 
-          ul.list-group.list-group-flush
-            each claim in contract.claims
-              li.list-group-item
-                a.text-uppercase(href=`/uploads/${claim.path}`) #{claim.name}
-                a.btn.btn-danger.btn-link(href=`/contracts/${contract._id}/${claim.path}/deleteClaim`)
-                  i.material-icons close 
-      .card
-        .card-header 
-          form
-            .form-row
-              .form-group.col
-                button.btn.btn-rose(type='submit', onclick="generate()") Сформировать претензию
-                input.form-control(type='text' id='money' placeholder='Введите сумму')
-          .form-row
-              input.form-control(type='hidden' id='tenantName' value=contract.tenant.name)
-              input.form-control(type='hidden' id='tenantAddress' value=contract.tenant.address)
-              input.form-control(type='hidden' id='buildingAddress' value=contract.building.address)
-              input.form-control(type='hidden' id='roomNumber' value=contract.roomNumber)
-              input.form-control(type='hidden' id='space' value=contract.space)
-              input.form-control(type='hidden' id='contractName' value=contract.name)
-              input.form-control(type='hidden' id='startDate' value=`${h.formatDate(contract.startDate)}`)
+      .row 
+        .col
+          .card
+            .card-header
+              form(action=`/addContractFiles/${contract._id}` method='POST' enctype='multipart/form-data')
+                .form-row
+                  .form-group.col.form-file-upload.form-file-multiple
+                    input.inputFileHidden(type='file' multiple='' name='files' id='files')
+                    .input-group
+                      input.form-control.inputFileVisible(type='text' placeholder='Загрузите договор')
+                      span.input-group-btn
+                        button.btn.btn-fab.btn-round.btn-warning(type='button')
+                          i.material-icons layers
+                .form-row
+                  .col-sm-10
+                    button.btn.btn-rose(type='submit') Загрузить
+            .card-body 
+              ul.list-group.list-group-flush
+                each file in contract.files
+                  li.list-group-item
+                    a.text-uppercase(href=`/uploads/${file.path}`) #{file.name}
+                    a.btn.btn-danger.btn-link(href=`/contracts/${contract._id}/${file.path}/deleteFile`)
+                      i.material-icons close 
+        .col
+          .card
+            .card-header
+              form(action=`/addContractClaims/${contract._id}` method='POST' enctype='multipart/form-data')
+                .form-row
+                  .form-group.col.form-file-upload.form-file-multiple
+                    input.inputFileHidden(type='file' multiple='' name='claims' id='claims')
+                    .input-group
+                      input.form-control.inputFileVisible(type='text' placeholder='Загрузите претензии')
+                      span.input-group-btn
+                        button.btn.btn-fab.btn-round.btn-warning(type='button')
+                          i.material-icons layers
+                .form-row
+                  .col-sm-10
+                    button.btn.btn-rose(type='submit') Загрузить
+            .card-body 
+              ul.list-group.list-group-flush
+                each claim in contract.claims
+                  li.list-group-item
+                    a.text-uppercase(href=`/uploads/${claim.path}`) #{claim.name}
+                    a.btn.btn-danger.btn-link(href=`/contracts/${contract._id}/${claim.path}/deleteClaim`)
+                      i.material-icons close 
+      .row  
+        .col
+          .card
+            .card-header
+              form(action=`/addContractDs/${contract._id}` method='POST' enctype='multipart/form-data')
+                .form-row
+                  .form-group.col.form-file-upload.form-file-multiple
+                    input.inputFileHidden(type='file' multiple='' name='ds' id='ds')
+                    .input-group
+                      input.form-control.inputFileVisible(type='text' placeholder='Загрузите доп. соглашения')
+                      span.input-group-btn
+                        button.btn.btn-fab.btn-round.btn-warning(type='button')
+                          i.material-icons layers
+                .form-row
+                  .col-sm-10
+                    button.btn.btn-rose(type='submit') Загрузить
+            .card-body 
+              ul.list-group.list-group-flush
+                each ds in contract.ds
+                  li.list-group-item
+                    a.text-uppercase(href=`/uploads/${ds.path}`) #{ds.name}
+                    a.btn.btn-danger.btn-link(href=`/contracts/${contract._id}/${ds.path}/deleteDs`)
+                      i.material-icons close 
+        .col
+          .card
+            .card-header
+              form(action=`/addContractActs/${contract._id}` method='POST' enctype='multipart/form-data')
+                .form-row
+                  .form-group.col.form-file-upload.form-file-multiple
+                    input.inputFileHidden(type='file' multiple='' name='acts' id='acts')
+                    .input-group
+                      input.form-control.inputFileVisible(type='text' placeholder='Загрузите акт')
+                      span.input-group-btn
+                        button.btn.btn-fab.btn-round.btn-warning(type='button')
+                          i.material-icons layers
+                .form-row
+                  .col-sm-10
+                    button.btn.btn-rose(type='submit') Загрузить
+            .card-body 
+              ul.list-group.list-group-flush
+                each act in contract.acts
+                  li.list-group-item
+                    a.text-uppercase(href=`/uploads/${act.path}`) #{act.name}
+                    a.btn.btn-danger.btn-link(href=`/contracts/${contract._id}/${act.path}/deleteAct`)
+                      i.material-icons close 
+      .row  
+        .col
+          .card
+            .card-header 
+              form
+                .form-row
+                  .form-group.col
+                    button.btn.btn-rose(type='submit', onclick="generate()") Сформировать претензию
+                    input.form-control(type='text' id='money' placeholder='Введите сумму')
+                .form-row
+                  input.form-control(type='hidden' id='tenantName' value=contract.tenant.name)
+                  input.form-control(type='hidden' id='tenantAddress' value=contract.tenant.address)
+                  input.form-control(type='hidden' id='buildingAddress' value=contract.building.name)
+                  input.form-control(type='hidden' id='roomNumber' value=contract.roomNumber)
+                  input.form-control(type='hidden' id='space' value=contract.space)
+                  input.form-control(type='hidden' id='contractName' value=contract.name)
+                  input.form-control(type='hidden' id='startDate' value=`${h.formatDate(contract.startDate)}`)
+        .col
+          .card
+            .card-header 
+              form
+                .form-row
+                  .form-group.col
+                    button.btn.btn-rose(type='submit', onclick="generateContract()") Сформировать договор
+                .form-row
+                    input.form-control(type='hidden' id='finishDate' value=`${h.formatDate(contract.finishDate)}`)
+                    input.form-control(type='hidden' id='dateNow' value=`${h.formatDate(Date.now())}`)
+                    input.form-control(type='hidden' id='tenantPerson' value=contract.tenant.person[0].name)
+                    input.form-control(type='hidden' id='buildingCadastr' value=contract.building.cadastr)
+                    input.form-control(type='hidden' id='price' value=`${contract.price*contract.space}`)
+                    input.form-control(type='hidden' id='tenantInn' value=contract.tenant.inn)
+                    input.form-control(type='hidden' id='tenantMail' value=contract.tenant.email)
+                    input.form-control(type='hidden' id='tenantPhone' value=contract.tenant.phone)
+      .row
+        .col
+          .card
+            .card-header 
+              form
+                .form-row
+                  .form-group.col
+                    button.btn.btn-rose(type='submit', onclick="generateDsContinue()") Сформировать соглашение о продлении
+                    input.form-control.datepicker(type='text' id='dateContinue' placeholder='Введите дату')
+        .col
+          .card
+            .card-header 
+              form
+                .form-row
+                  .form-group.col
+                    button.btn.btn-rose(type='submit', onclick="generateDsStop()") Сформировать соглашение о расторжении
+                    input.form-control.datepicker(type='text' id='dateEnd' placeholder='Введите дату')
     .tab-pane(id='link3')
       .row.bg-white
         .col.text-center.py-2
@@ -163,4 +249,12 @@ block content
         each inspection in contract.inspections
           .col-md-4
             +inspectionCard(inspection)
+    .tab-pane(id='link4')
+      .row.bg-white
+        .col.text-center.py-2
+          a.btn.btn-rose(href=`/addClaim/${contract._id}` style='color:white') добавить иск
+      .row
+        each claim in contract.cclaims
+          .col-md-4
+            +claimCard(claim)
 
